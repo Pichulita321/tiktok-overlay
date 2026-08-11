@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bailes & Alertas TikTok Vertical 9:16 (1080x1920) - 6 Slots Master</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Outfit:wght@300;600;800;900&family=Poppins:ital,wght@1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tiktok-pink: #FE2C55;
+            --tiktok-cyan: #25F4EE;
+            --kick-green: #53fc18;
+            --kick-green-glow: rgba(83, 252, 24, 0.4);
+            --dark-glass: rgba(10, 15, 12, 0.94);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --font-main: 'Outfit', sans-serif;
+            --font-accent: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body, html {
+            background: transparent;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-main);
+            color: white;
+        }
+
+        .drag-target, .alert-card-slim, .troll-scatter-box, .slot-hud-card, #video-container, #slots-unificado-group {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+        }
+
+        /* ==========================================================
+           🎯 ESCENARIO PRINCIPAL VERTICAL 9:16 (1080px x 1920px STRICT)
+           ========================================================== */
+        #vertical-stage {
+            position: relative;
+            width: 1080px;
+            height: 1920px;
+            background: transparent;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
+            will-change: transform;
+        }
+
+        /* Auto-Ajuste Proporcional para previsualización en monitores horizontales (1920x1080) */
+        @media screen and (max-height: 1919px) {
+            #vertical-stage {
+                transform: scale(calc(min(100vh / 1920, 100vw / 1080))) translateZ(0);
+                transform-origin: center center;
+            }
+        }
+
+        /* ==========================================================
+           1. REPRODUCTOR DE VIDEO DE FOLLOW VERTICAL (Z-INDEX 5000)
+           ========================================================== */
+        #video-container {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            z-index: 5000;
+        }
+
+        #dance-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dance-gradient-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 1080px;
+            height: 600px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
+            z-index: 5002;
+        }
+
+        .dance-text-overlay {
+            position: absolute;
+            bottom: 140px;
+            left: 0;
+            width: 1080px;
+            text-align: center;
+            z-index: 5003;
+            padding: 0 40px;
+        }
+
+        .dance-tag {
+            font-size: 2.2rem;
+            color: #25f4ee;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            font-weight: 800;
+            text-shadow: 0 0 16px rgba(37, 244, 238, 0.9);
+            margin-bottom: 12px;
+        }
+
+        .dance-user {
+            font-size: 4.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-style: italic;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 4px 0 0 #fe2c55, -4px 0 0 #25f4ee;
+            word-wrap: break-word;
+            line-height: 1.1;
+        }
+
+        /* ==========================================================
+           2. MÁSCARA GENERAL DE ALERTAS VERTICAL (Z-INDEX 8000)
+           ========================================================== */
+        #alert-overlay {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+            z-index: 8000;
+        }
+
+        /* ----- BARRA ELEGANTE DE ALERTAS POP-UP (DONACIONES 1 A INFINITO) ----- */
+        .alert-card-slim {
+            position: absolute;
+            top: 50px;
+            left: 160px;
+            background: rgba(16, 18, 26, 0.98);
+            border-radius: 16px;
+            border-left: 5px solid #25F4EE;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.92);
+            opacity: 0;
+            transform: translateY(-20px) translateZ(0);
+            will-change: transform, opacity;
+            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+            pointer-events: auto;
+            overflow: hidden;
+            height: 64px;
+            min-width: 440px;
+            max-width: 780px;
+            padding: 0 20px 0 12px;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 14px;
+            z-index: 9500;
+            transform-origin: top left;
+        }
+
+        .alert-card-slim.show {
+            opacity: 1;
+            transform: translateY(0);
+            display: flex;
+        }
+
+        .shimmer-bg {
+            position: absolute;
+            top: 0; left: -150%;
+            width: 80%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-20deg);
+            pointer-events: none;
+        }
+
+        .alert-card-slim.show .shimmer-bg {
+            animation: shimmerEffect 2.5s infinite;
+        }
+
+        @keyframes shimmerEffect {
+            0% { left: -150%; }
+            100% { left: 250%; }
+        }
+
+        .slim-avatar-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+        }
+
+        .slim-text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            line-height: 1.15;
+            margin-right: auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .slim-username {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        .slim-action {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #25F4EE;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slim-badge {
+            background: rgba(37, 244, 238, 0.18);
+            color: #25F4EE;
+            font-size: 12px;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(37, 244, 238, 0.35);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .slim-gift-icon {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+        }
+
+        .slim-progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #25F4EE;
+            width: 0%;
+            z-index: 6;
+        }
+
+        .slim-progress-bar.run {
+            animation: alertProgressRun 4.2s linear forwards;
+        }
+
+        @keyframes alertProgressRun {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* ==========================================================
+           3. TARJETA POPUP TROLLFACE GIGANTE (POPUP AL RECIBIR REGALO DE 30 MONEDAS)
+           ========================================================== */
+        .troll-scatter-box {
+            position: absolute !important;
+            top: 750px;
+            left: 180px;
+            width: 720px;
+            height: 550px;
+            pointer-events: none;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999 !important;
+            overflow: visible;
+            will-change: transform, opacity;
+        }
+
+        .troll-scatter-box.show {
+            display: flex !important;
+        }
+
+        .troll-content-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .troll-scatter-box.show .troll-content-wrapper {
+            animation: trollAppear 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes trollAppear {
+            0% { transform: scale(4.5) rotate(15deg); opacity: 1; }
+            25% { transform: scale(1) rotate(0deg); opacity: 1; }
+            85% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0.5) translateY(60px); opacity: 0; }
+        }
+
+        .giant-troll-face {
+            width: 380px;
+            height: auto;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.95));
+            will-change: transform;
+        }
+
+        .troll-scatter-box.show .giant-troll-face {
+            animation: absurdWobble 0.4s infinite alternate ease-in-out;
+        }
+
+        @keyframes absurdWobble {
+            0% { transform: translateY(0) scale(1) rotate(-12deg); }
+            50% { transform: translateY(-15px) scale(1.05) rotate(0deg); }
+            100% { transform: translateY(-30px) scale(1.1) rotate(12deg); }
+        }
+
+        .troll-header-pill {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.92);
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: 3px solid var(--tiktok-pink);
+            box-shadow: 0 0 25px rgba(254, 44, 85, 0.8);
+        }
+
+        .troll-scatter-box.show .troll-header-pill {
+            animation: neonFlicker 0.9s infinite linear;
+        }
+
+        @keyframes neonFlicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                border-color: var(--tiktok-pink);
+                box-shadow: 0 0 25px rgba(254, 44, 85, 0.9);
+            }
+            20%, 24%, 55%, 58% {
+                border-color: rgba(254, 44, 85, 0.25);
+                box-shadow: 0 0 6px rgba(254, 44, 85, 0.2);
+            }
+        }
+
+        .troll-value-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: 32px;
+            color: var(--tiktok-pink);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 14px rgba(254, 44, 85, 0.9);
+        }
+
+        .troll-hype-icon {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 12px rgba(254, 44, 85, 0.9));
+        }
+
+        .troll-username-text {
+            font-family: 'Poppins', sans-serif;
+            font-style: italic;
+            font-weight: 900;
+            font-size: 52px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-align: center;
+            text-shadow: 
+                -4px -4px 0 #000,  
+                 4px -4px 0 #000,
+                -4px  4px 0 #000,
+                 4px  4px 0 #000,
+                0 0 20px rgba(0, 0, 0, 1.0),
+                0 10px 25px rgba(0, 0, 0, 1.0);
+        }
+
+        /* ==========================================================
+           4. VIGNETTES EN PANTALLA COMPLETA VERTICAL (Z-INDEX 7000)
+           ========================================================== */
+        .troll-vignette {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+            z-index: 7000;
+            opacity: 0;
+            display: none;
+            transition: opacity 0.4s ease;
+        }
+
+        #troll-frozen-vignette {
+            background: radial-gradient(circle, transparent 30%, rgba(0, 242, 255, 0.4) 65%, rgba(0, 150, 255, 0.9) 100%);
+            box-shadow: inset 0 0 150px rgba(0, 242, 255, 0.75);
+        }
+
+        #blizzard-canvas {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+        }
+
+        #troll-red-vignette {
+            background: radial-gradient(circle, transparent 35%, rgba(139, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.96) 100%);
+            box-shadow: inset 0 0 160px rgba(255, 0, 0, 0.8);
+        }
+
+        #troll-hacking-console {
+            position: absolute;
+            top: 1300px;
+            left: 90px;
+            width: 900px;
+            height: 480px;
+            background: rgba(8, 2, 2, 0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 3px solid #ff3b30;
+            box-shadow: 0 0 40px rgba(255, 59, 48, 0.5), inset 0 0 20px rgba(255, 59, 48, 0.2);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff3b30;
+            z-index: 7100;
+            overflow: hidden;
+        }
+
+        .console-title {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            border-bottom: 2px solid rgba(255, 59, 48, 0.5);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 8px #ff3b30;
+        }
+
+        .console-title::before {
+            content: "●";
+            color: #ff3b30;
+            animation: blinkingDot 0.8s infinite;
+        }
+
+        @keyframes blinkingDot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .console-body {
+            flex-grow: 1;
+            font-size: 18px;
+            line-height: 1.5;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .console-line {
+            opacity: 0;
+            transform: translateX(-15px);
+            animation: lineAppear 0.2s forwards ease-out;
+            text-shadow: 0 0 5px rgba(255, 59, 48, 0.8);
+        }
+
+        @keyframes lineAppear {
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        #troll-glitch-vignette {
+            background: rgba(8, 2, 5, 0.55);
+            box-shadow: inset 0 0 250px rgba(0, 229, 255, 0.75), inset 0 0 400px rgba(255, 0, 136, 0.75);
+            overflow: hidden;
+        }
+
+        #troll-glitch-vignette::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.5) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.2), rgba(0, 255, 0, 0.1), rgba(0, 0, 255, 0.2));
+            background-size: 100% 12px, 8px 100%;
+            pointer-events: none;
+            opacity: 0.95;
+            z-index: 10;
+        }
+
+        #troll-glitch-vignette::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 0, 136, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            animation: glitchStaticBlock 0.12s infinite steps(1);
+        }
+
+        @keyframes glitchStaticBlock {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            9% { opacity: 0.8; background: rgba(0, 229, 255, 0.3); clip-path: inset(40% 0 30% 0); }
+            32% { opacity: 0.9; background: rgba(255, 0, 136, 0.35); clip-path: inset(10% 0 80% 0); }
+            45% { opacity: 0.5; background: rgba(255, 255, 255, 0.25); clip-path: inset(70% 0 15% 0); }
+            76% { opacity: 0.85; background: rgba(0, 0, 0, 0.6); clip-path: inset(5% 0 90% 0); }
+            91% { opacity: 0.7; background: rgba(83, 252, 24, 0.25); clip-path: inset(50% 0 45% 0); }
+        }
+
+        #troll-zoom-vignette {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+            z-index: 7000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow: hidden;
+            background: radial-gradient(circle, transparent 65%, rgba(255, 255, 255, 0.05) 80%, rgba(255, 255, 255, 0.15) 100%);
+            -webkit-mask-image: radial-gradient(circle, transparent 65%, black 88%);
+            mask-image: radial-gradient(circle, transparent 65%, black 88%);
+        }
+
+        .zoom-ray-layer {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 2400px; height: 2400px;
+            margin-top: -1200px; margin-left: -1200px;
+            pointer-events: none;
+            transform-origin: center center;
+            will-change: transform, opacity;
+        }
+
+        .layer-cyan {
+            background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.95) 0deg 1.3deg, transparent 1.3deg 5deg);
+            animation: spaceWarpForwardCyan 0.9s infinite linear;
+        }
+
+        .layer-magenta {
+            background: repeating-conic-gradient(from 2.5deg, rgba(255, 255, 255, 0.65) 0deg 1.0deg, transparent 1.0deg 6deg);
+            animation: spaceWarpForwardMagenta 0.9s infinite linear;
+            animation-delay: -0.3s;
+        }
+
+        .layer-white {
+            background: repeating-conic-gradient(from 1.2deg, rgba(255, 255, 255, 0.99) 0deg 0.8deg, transparent 0.8deg 4deg);
+            animation: spaceWarpForwardWhite 0.9s infinite linear;
+            animation-delay: -0.6s;
+        }
+
+        @keyframes spaceWarpForwardCyan {
+            0% { transform: rotate(0deg) scale(0.2); opacity: 0; }
+            15% { opacity: 0.9; }
+            85% { opacity: 0.9; }
+            100% { transform: rotate(0deg) scale(3.5); opacity: 0; }
+        }
+
+        @keyframes spaceWarpForwardMagenta {
+            0% { transform: rotate(25deg) scale(0.2); opacity: 0; }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% { transform: rotate(25deg) scale(3.5); opacity: 0; }
+        }
+
+        @keyframes spaceWarpForwardWhite {
+            0% { transform: rotate(50deg) scale(0.2); opacity: 0; }
+            15% { opacity: 0.98; }
+            85% { opacity: 0.98; }
+            100% { transform: rotate(50deg) scale(3.5); opacity: 0; }
+        }
+
+        /* 5. DIZZY DRUNK MOUSE VIGNETTE (SUAVE + 4 CURSORES ANIMADOS) */
+        #troll-raton-vignette {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+            z-index: 7000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            background: radial-gradient(circle, transparent 50%, rgba(83, 252, 24, 0.05) 80%, rgba(0, 229, 255, 0.12) 100%);
+            box-shadow: inset 0 0 100px rgba(0, 229, 255, 0.18);
+            overflow: hidden;
+        }
+
+        /* 4 CURSORES NEÓN ANIMADOS PARA RATÓN LOCO */
+        .crazy-cursor-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 0 15px #53fc18) drop-shadow(0 0 25px #25f4ee);
+            z-index: 7500;
+            pointer-events: none;
+            animation-duration: 2.2s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-direction: alternate;
+        }
+
+        .cursor-1 { top: 25%; left: 15%; animation-name: crazyMouse1; }
+        .cursor-2 { top: 35%; right: 15%; animation-name: crazyMouse2; animation-delay: -0.6s; }
+        .cursor-3 { bottom: 30%; left: 25%; animation-name: crazyMouse3; animation-delay: -1.2s; }
+        .cursor-4 { bottom: 20%; right: 25%; animation-name: crazyMouse4; animation-delay: -1.8s; }
+
+        @keyframes crazyMouse1 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            35% { transform: translate(320px, 180px) rotate(140deg) scale(1.3); }
+            70% { transform: translate(120px, 450px) rotate(-90deg) scale(0.9); }
+            100% { transform: translate(450px, -50px) rotate(220deg) scale(1.2); }
+        }
+
+        @keyframes crazyMouse2 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1.1); }
+            30% { transform: translate(-380px, 250px) rotate(-160deg) scale(0.8); }
+            65% { transform: translate(-150px, -200px) rotate(110deg) scale(1.4); }
+            100% { transform: translate(-420px, 350px) rotate(-240deg) scale(1); }
+        }
+
+        @keyframes crazyMouse3 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0.9); }
+            40% { transform: translate(280px, -320px) rotate(200deg) scale(1.35); }
+            75% { transform: translate(450px, 100px) rotate(-120deg) scale(1); }
+            100% { transform: translate(-100px, -400px) rotate(300deg) scale(1.1); }
+        }
+
+        @keyframes crazyMouse4 {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1.2); }
+            35% { transform: translate(-300px, -350px) rotate(-180deg) scale(0.85); }
+            65% { transform: translate(-500px, 50px) rotate(150deg) scale(1.3); }
+            100% { transform: translate(100px, -250px) rotate(-210deg) scale(1); }
+        }
+
+        #troll-invertido-vignette {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+            z-index: 7000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.75) 100%);
+            box-shadow: inset 0 0 160px rgba(0, 0, 0, 0.8);
+        }
+
+        #troll-parpadeo-vignette {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            pointer-events: none;
+            z-index: 7000;
+            display: none;
+            opacity: 0;
+            background: rgba(255, 255, 255, 0.88);
+            animation: fastStrobe 0.2s infinite alternate;
+        }
+
+        @keyframes fastStrobe {
+            0% { opacity: 0; }
+            100% { opacity: 0.88; }
+        }
+
+        /* ==========================================================
+           🎛️ CONTENEDOR UNIFICADO DE LOS 6 SLOTS (MOVER TODO JUNTO Y ESCALAR)
+           ========================================================== */
+        #slots-unificado-group {
+            position: absolute;
+            top: 180px;
+            left: 80px;
+            width: 920px;
+            height: 550px;
+            z-index: 9000;
+            pointer-events: none;
+            transform-origin: top left;
+        }
+
+        .slot-hud-card {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.7);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none;
+        }
+
+        .slot-hud-card.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .countdown-ring-svg {
+            position: absolute;
+            transform: rotate(-90deg);
+            width: 230px;
+            height: 230px;
+        }
+
+        .countdown-ring-bg {
+            stroke: rgba(0, 229, 255, 0.15);
+            stroke-width: 9px;
+            fill: rgba(10, 15, 12, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .countdown-ring-active {
+            stroke-width: 9px;
+            fill: none;
+            stroke-linecap: round;
+            stroke-dasharray: 610;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+        }
+
+        .frost-ring-active { stroke: #00e5ff; filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.9)); }
+        .zoom-ring-active { stroke: #ff00ff; filter: drop-shadow(0 0 12px rgba(255, 0, 255, 0.9)); }
+        .raton-ring-active { stroke: #53fc18; filter: drop-shadow(0 0 12px rgba(83, 252, 24, 0.9)); }
+        .invertido-ring-active { stroke: #ffffff; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)); }
+
+        .modern-countdown-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 80px;
+            font-weight: 900;
+            color: #ffffff;
+            z-index: 2;
+            text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+        }
+
+        .modern-donor-label {
+            position: absolute;
+            bottom: -38px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            color: #ffffff;
+            white-space: nowrap;
+            letter-spacing: 1.5px;
+            text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 3px 3px 0 #000, 0 0 12px rgba(37, 244, 238, 0.9);
+        }
+
+        .slot-troll-title-badge {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #25f4ee;
+            font-size: 13px;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1.5px solid #25f4ee;
+            white-space: nowrap;
+            box-shadow: 0 0 10px rgba(37, 244, 238, 0.6);
+        }
+
+        /* ==========================================================
+           📍 MODO EDICIÓN Y AJUSTADOR DE POSICIONES MANUAL (PRESIONAR 'M')
+           ========================================================== */
+        .drag-target {
+            pointer-events: auto !important;
+            cursor: move !important;
+            transition: none !important;
+        }
+
+        .edit-mode-active .drag-target {
+            outline: 3.5px dashed #25F4EE !important;
+            outline-offset: 6px;
+            background: rgba(37, 244, 238, 0.15) !important;
+            box-shadow: 0 0 30px rgba(37, 244, 238, 0.6) !important;
+            opacity: 1 !important;
+            display: flex !important;
+        }
+
+        .drag-badge-label {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            background: #25F4EE;
+            color: #000;
+            font-size: 14px;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: none;
+            z-index: 99999;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .edit-mode-active .drag-badge-label {
+            display: block;
+        }
+
+        #editor-banner {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(16, 18, 26, 0.98);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 900;
+            z-index: 99999;
+            display: none;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.95);
+            border: 2px solid #25F4EE;
+            text-align: center;
+            min-width: 640px;
+        }
+
+        .coord-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .coord-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 800;
+        }
+
+        .coord-title {
+            color: #25F4EE;
+            width: 150px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .coord-inputs-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .coord-num-input {
+            width: 65px;
+            background: #10121a;
+            color: #fff;
+            border: 1px solid #25F4EE;
+            border-radius: 6px;
+            padding: 2px 4px;
+            font-size: 13px;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        .coord-num-input:focus {
+            outline: none;
+            border-color: #FE2C55;
+            background: #000;
+        }
+
+        .scale-control-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 6px 0;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        .scale-label {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #25F4EE;
+        }
+
+        .scale-btn {
+            background: #25F4EE;
+            color: #000;
+            border: none;
+            font-weight: 900;
+            padding: 5px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .scale-btn:hover { background: #fff; }
+
+        /* ==========================================================
+           🧪 PANEL DE PRUEBAS INTERACTIVO (TOTALMENTE INVISIBLE POR DEFECTO)
+           ========================================================== */
+        .test-toggle-btn {
+            display: none !important;
+        }
+
+        .test-panel {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(10, 12, 18, 0.96);
+            padding: 18px 22px;
+            border-radius: 20px;
+            border: 2px solid rgba(37, 244, 238, 0.6);
+            z-index: 99999;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.9);
+            width: 380px;
+        }
+
+        .test-panel.visible { display: flex !important; }
+
+        .test-btn {
+            background: #181b26;
+            color: #fff;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .test-btn:hover { background: var(--tiktok-pink); color: #fff; }
+
+        .editor-btn {
+            background: #25F4EE !important;
+            color: #000 !important;
+            font-weight: 900 !important;
+        }
+
+        /* Canvas invisible anti-sleep para OBS Studio */
+        #anti-sleep { position: absolute; opacity: 0.01; width: 1px; height: 1px; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <!-- ESCENARIO PRINCIPAL 9:16 VERTICAL -->
+    <div id="vertical-stage">
+
+        <!-- BANNER INFORMATIVO MODO EDICIÓN CON CONTROL NUMÉRICO (X, Y, ESCALA) -->
+        <div id="editor-banner">
+            <div style="font-size: 16px; margin-bottom: 8px; font-weight: 900; color: #25F4EE; text-align: center;">
+                📍 MODO EDICIÓN CON COORDENADAS NUMÉRICAS (X, Y, ESCALA)
+            </div>
+            <div style="font-size: 12px; margin-bottom: 10px; color: #fff; text-align: center;">
+                Arrastra cualquier elemento o ingresa los números exactos. Presiona <strong>'M'</strong> para salir y guardar.
+            </div>
+
+            <!-- TABLA DE CONTROL NUMÉRICO -->
+            <div id="coord-inputs-grid" class="coord-grid">
+                <!-- Se genera dinámicamente en JS via updateCoordInputsPanel() -->
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                <button class="scale-btn-mini" style="background: #25F4EE !important; color: #000 !important; font-size: 13px !important; padding: 4px 14px !important;" onclick="copyCoordinatesSummary()">📋 COPIAR COORDENADAS (PARA ENVIAR AL CHAT)</button>
+                <button class="scale-btn-mini" style="background: #FE2C55 !important; color: #fff !important; font-size: 13px !important; padding: 4px 14px !important;" onclick="resetPositions()">🔄 RESTABLECER TODO</button>
+            </div>
+        </div>
+
+        <!-- PANEL DE PRUEBAS INTERACTIVO (PRESIONAR TECLA 'P' PARA ABRIR) -->
+        <div id="testPanel" class="test-panel">
+            <button class="test-btn editor-btn" onclick="toggleEditMode()">📍 AJUSTAR POSICIONES Y TAMAÑO (M)</button>
+            
+            <!-- CONTROLES DE TAMAÑO GRUPAL -->
+            <div class="scale-control-group">
+                <span class="scale-label">TAMAÑO 6 SLOTS:</span>
+                <button class="scale-btn" onclick="changeGroupScale(-0.1)">➖ ACHICAR</button>
+                <span id="scale-val-display" style="font-weight: 900; font-size: 13px;">100%</span>
+                <button class="scale-btn" onclick="changeGroupScale(0.1)">➕ AGRANDAR</button>
+            </div>
+
+            <button class="test-btn" onclick="resetPositions()">🔄 RESTABLECER POSICIONES POR DEFECTO</button>
+            <hr style="border: 0.5px solid rgba(255,255,255,0.2); margin: 4px 0;">
+            <button class="test-btn" onclick="triggerFollowAlert('Giankasor_Seguidor')">👤 1 Follow + Video Baile (Tecla F)</button>
+            <button class="test-btn" onclick="triggerTestAlert('Donador_Fan', 'Rosa', 1, 'TrollFace.png', 'tiktok_coin.png')">🌹 1 Moneda (Tecla 1)</button>
+            <button class="test-btn" onclick="triggerTrollAlert('Donador_Raton', 'Troleo_Raton_Borracho')">🐭 1. Ratón Borracho (10s + 4 Cursores) - Tecla 2</button>
+            <button class="test-btn" onclick="triggerTrollAlert('Donador_Parpadeo', 'Troleo_Parpadeo')">💡 2. Parpadeo de Pantalla (10s) - Tecla 3</button>
+            <button class="test-btn" onclick="triggerTrollAlert('Donador_Invertido', 'Troleo_Invertido')">🙃 3. Pantalla Invertida 180° (10s) - Tecla 4</button>
+            <button class="test-btn" onclick="triggerTrollAlert('Donador_Zoom', 'Troleo_Zoom')">🔍 4. Space Warp Zoom (8s) - Tecla 5</button>
+            <button class="test-btn" onclick="triggerTrollAlert('Donador_Helado', 'Troleo_Congelado')">❄️ 5. Pantalla Helada / Ventisca (15s) - Tecla 6</button>
+        </div>
+
+        <!-- 1. MÁSCARA GENERAL DE ALERTAS VERTICAL (Z-INDEX 8000) -->
+        <div id="alert-overlay">
+            <!-- BARRA ELEGANTE DE REGALOS (DONACIONES 1 A INFINITO) -->
+            <div id="alert-slim" class="alert-card-slim drag-target" id-element="slim">
+                <div class="drag-badge-label">
+                    📍 Alertas Donación
+                    <button class="scale-btn-mini" onclick="changeElementScale('slim', 0.1, event)">➕</button>
+                    <button class="scale-btn-mini" onclick="changeElementScale('slim', -0.1, event)">➖</button>
+                    <button class="scale-btn-mini" onclick="changeElementScale('slim', 0, event)">🔄 100%</button>
+                </div>
+                <div class="shimmer-bg"></div>
+                <img id="slimAvatar" class="slim-avatar-box" src="TrollFace.png" alt="Avatar">
+                <div class="slim-text-group">
+                    <div id="slimUsername" class="slim-username">Giankasor</div>
+                    <div id="slimAction" class="slim-action">¡ENVIÓ ROSA x1!</div>
+                </div>
+                <div id="slimBadge" class="slim-badge">1 MONEDA</div>
+                <img id="slimGiftIcon" class="slim-gift-icon" src="tiktok_coin.png" alt="Icon">
+                <div id="slimProgressBar" class="slim-progress-bar"></div>
+            </div>
+
+            <!-- TARJETA POPUP TROLLFACE GIGANTE (ARRASTRABLE) -->
+            <div id="trollCard" class="troll-scatter-box drag-target" id-element="trollCard">
+                <div class="drag-badge-label">
+                    📍 Tarjeta TrollFace Gigante
+                    <button class="scale-btn-mini" onclick="changeElementScale('trollCard', 0.1, event)">➕</button>
+                    <button class="scale-btn-mini" onclick="changeElementScale('trollCard', -0.1, event)">➖</button>
+                    <button class="scale-btn-mini" onclick="changeElementScale('trollCard', 0, event)">🔄 100%</button>
+                </div>
+                <div class="troll-content-wrapper">
+                    <div class="troll-header-pill">
+                        <span class="troll-value-text">30 MONEDAS</span>
+                        <img src="Rosquilla.png" class="troll-hype-icon" alt="Donas">
+                    </div>
+                    <img src="TrollFace.png" class="giant-troll-face" alt="Troll Face">
+                    <div class="troll-text-group">
+                        <span class="troll-username-text" id="trollUsernameDisplay">GIANKASOR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. VIGNETTES Y CIRCULAR HUD COUNTDOWN EN PANTALLA COMPLETA VERTICAL (Z-INDEX 7000) -->
+
+        <!-- A. FROZEN BLIZZARD VIGNETTE -->
+        <div id="troll-frozen-vignette" class="troll-vignette">
+            <canvas id="blizzard-canvas" width="1080" height="1920"></canvas>
+        </div>
+
+        <!-- B. CYBER HACKING TERMINAL VIGNETTE (ARRASTRABLE) -->
+        <div id="troll-red-vignette" class="troll-vignette">
+            <div id="troll-hacking-console" class="drag-target" id-element="console">
+                <div class="drag-badge-label">
+                    📍 Consola Hacker Roja
+                    <button class="scale-btn-mini" onclick="changeElementScale('console', 0.1, event)">➕</button>
+                    <button class="scale-btn-mini" onclick="changeElementScale('console', -0.1, event)">➖</button>
+                </div>
+                <div class="console-title">TERMINAL DE CONTROL SENSITIVIDAD - UDP 8085</div>
+                <div id="console-logs" class="console-body"></div>
+            </div>
+        </div>
+
+        <!-- C. ABERRATION GLITCH VIGNETTE -->
+        <div id="troll-glitch-vignette" class="troll-vignette"></div>
+
+        <!-- D. COSMIC SPACE WARP ZOOM VIGNETTE -->
+        <div id="troll-zoom-vignette" class="troll-vignette">
+            <div class="zoom-ray-layer layer-cyan"></div>
+            <div class="zoom-ray-layer layer-magenta"></div>
+            <div class="zoom-ray-layer layer-white"></div>
+        </div>
+
+        <!-- E. DIZZY DRUNK MOUSE VIGNETTE (4 CURSORES NEÓN ANIMADOS) -->
+        <div id="troll-raton-vignette" class="troll-vignette">
+            <svg class="crazy-cursor-icon cursor-1" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3l7 18 3-7 7-3L3 3z" fill="#53fc18" stroke="#ffffff" stroke-width="1.5"/>
+            </svg>
+            <svg class="crazy-cursor-icon cursor-2" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3l7 18 3-7 7-3L3 3z" fill="#25f4ee" stroke="#ffffff" stroke-width="1.5"/>
+            </svg>
+            <svg class="crazy-cursor-icon cursor-3" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3l7 18 3-7 7-3L3 3z" fill="#fe2c55" stroke="#ffffff" stroke-width="1.5"/>
+            </svg>
+            <svg class="crazy-cursor-icon cursor-4" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3l7 18 3-7 7-3L3 3z" fill="#53fc18" stroke="#ffffff" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <!-- F. INVERTIDO SCREEN VIGNETTE -->
+        <div id="troll-invertido-vignette" class="troll-vignette"></div>
+
+        <!-- G. PARPADEO VIGNETTE -->
+        <div id="troll-parpadeo-vignette" class="troll-vignette"></div>
+
+        <!-- 🎛️ CONTENEDOR UNIFICADO DE LOS 6 SLOTS (ARRASTRA EL GRUPO COMPLETO O CADA SLOT INDIVIDUALMENTE CON 'M') -->
+        <div id="slots-unificado-group" class="drag-target" id-element="slotsGroup">
+            <div class="drag-badge-label">
+                📍 GRUPO DE 6 SLOTS
+                <button class="scale-btn-mini" onclick="changeElementScale('slotsGroup', 0.1, event)">➕</button>
+                <button class="scale-btn-mini" onclick="changeElementScale('slotsGroup', -0.1, event)">➖</button>
+            </div>
+
+            <!-- SLOT 1 (Top Left) -->
+            <div id="slot-card-1" class="slot-hud-card drag-target" id-element="slot1" style="top: 0px; left: 0px;">
+                <div class="drag-badge-label">📍 Slot 1</div>
+                <div class="slot-troll-title-badge">🐭 RATÓN BORRACHO</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle class="countdown-ring-active raton-ring-active" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div class="modern-countdown-number">10</div>
+                <div class="modern-donor-label">USER_1</div>
+            </div>
+
+            <!-- SLOT 2 (Top Center) -->
+            <div id="slot-card-2" class="slot-hud-card drag-target" id-element="slot2" style="top: 0px; left: 330px;">
+                <div class="drag-badge-label">📍 Slot 2</div>
+                <div class="slot-troll-title-badge">💡 PARPADEO</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle class="countdown-ring-active invertido-ring-active" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div class="modern-countdown-number">10</div>
+                <div class="modern-donor-label">USER_2</div>
+            </div>
+
+            <!-- SLOT 3 (Top Right) -->
+            <div id="slot-card-3" class="slot-hud-card drag-target" id-element="slot3" style="top: 0px; left: 660px;">
+                <div class="drag-badge-label">📍 Slot 3</div>
+                <div class="slot-troll-title-badge">🔍 SPACE WARP</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle class="countdown-ring-active zoom-ring-active" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div class="modern-countdown-number">8</div>
+                <div class="modern-donor-label">USER_3</div>
+            </div>
+
+            <!-- SLOT 4 (Bottom Left) -->
+            <div id="slot-card-4" class="slot-hud-card drag-target" id-element="slot4" style="top: 290px; left: 0px;">
+                <div class="drag-badge-label">📍 Slot 4</div>
+                <div class="slot-troll-title-badge">🙃 INVERTIDA</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle class="countdown-ring-active invertido-ring-active" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div class="modern-countdown-number">10</div>
+                <div class="modern-donor-label">USER_4</div>
+            </div>
+
+            <!-- SLOT 5 (Bottom Center) -->
+            <div id="slot-card-5" class="slot-hud-card drag-target" id-element="slot5" style="top: 290px; left: 330px;">
+                <div class="drag-badge-label">📍 Slot 5</div>
+                <div class="slot-troll-title-badge">🐭 RATÓN BORRACHO</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle class="countdown-ring-active raton-ring-active" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div class="modern-countdown-number">10</div>
+                <div class="modern-donor-label">USER_5</div>
+            </div>
+
+            <!-- SLOT 6 (Bottom Right) -->
+            <div id="slot-card-6" class="slot-hud-card drag-target" id-element="slot6" style="top: 290px; left: 660px;">
+                <div class="drag-badge-label">📍 Slot 6</div>
+                <div class="slot-troll-title-badge">💡 PARPADEO</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle class="countdown-ring-active invertido-ring-active" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div class="modern-countdown-number">10</div>
+                <div class="modern-donor-label">USER_6</div>
+            </div>
+        </div>
+
+        <!-- 3. REPRODUCTOR DE VIDEO DE FOLLOW BAILE VERTICAL (Z-INDEX 5000) -->
+        <div id="video-container" class="drag-target" id-element="videoFollow">
+            <div class="drag-badge-label">📍 Video Follow (Bailes)</div>
+            <video id="dance-video" src="FollowBaile.mp4" playsinline></video>
+            <div class="dance-gradient-overlay"></div>
+            <div class="dance-text-overlay">
+                <div class="dance-tag">NUEVO SEGUIDOR</div>
+                <div class="dance-user" id="dance-user-display">Giankasor_</div>
+            </div>
+        </div>
+
+        <canvas id="anti-sleep" width="1" height="1"></canvas>
+    </div>
+
+    <script>
+        function toggleTestMenu() {
+            const testPanel = document.getElementById('testPanel');
+            testPanel.classList.toggle('visible');
+        }
+
+        const verticalStage = document.getElementById('vertical-stage');
+        const videoContainer = document.getElementById('video-container');
+        const danceVideo = document.getElementById('dance-video');
+        const danceUserDisplay = document.getElementById('dance-user-display');
+
+        const alertSlim = document.getElementById('alert-slim');
+        const slimAvatar = document.getElementById('slimAvatar');
+        const slimUsername = document.getElementById('slimUsername');
+        const slimAction = document.getElementById('slimAction');
+        const slimBadge = document.getElementById('slimBadge');
+
+        const trollCard = document.getElementById('trollCard');
+        const trollUsernameDisplay = document.getElementById('trollUsernameDisplay');
+
+        const slotsUnificadoGroup = document.getElementById('slots-unificado-group');
+        const scaleValDisplay = document.getElementById('scale-val-display');
+        const editorBanner = document.getElementById('editor-banner');
+
+        // AUDIO MANAGER MULTI-SLOT
+        const activeAudios = {};
+
+        function playSFX(key, file, volume = 0.65) {
+            if (activeAudios[key]) {
+                try { activeAudios[key].pause(); } catch(e){}
+            }
+            const sfx = new Audio(file);
+            sfx.volume = volume;
+            activeAudios[key] = sfx;
+            sfx.play().catch(e => console.warn(`SFX Audio fallback: ${file}`, e));
+        }
+
+        function stopSFX(key) {
+            if (activeAudios[key]) {
+                try {
+                    activeAudios[key].pause();
+                    activeAudios[key].currentTime = 0;
+                } catch(e){}
+                delete activeAudios[key];
+            }
+        }
+
+        // ==========================================
+        // 📍 POSICIONES UNIFICADAS Y ESCALADO INDIVIDUAL POR ELEMENTO
+        // ==========================================
+        const defaultPositions = {
+            slim: { top: 514, left: 129, scale: 1.4 },
+            trollCard: { top: 846, left: 181, scale: 0.65 },
+            console: { top: 1618, left: 110, scale: 1.0 },
+            videoFollow: { top: -542, left: 376, scale: 0.3 },
+            slotsGroup: { top: 709, left: 360, scale: 0.4 },
+            slot1: { top: 0, left: 0 },
+            slot2: { top: 0, left: 330 },
+            slot3: { top: 0, left: 660 },
+            slot4: { top: 290, left: 0 },
+            slot5: { top: 290, left: 330 },
+            slot6: { top: 290, left: 660 }
+        };
+
+        let savedPositions = JSON.parse(localStorage.getItem('tiktok_custom_positions_v8') || 'null') || JSON.parse(JSON.stringify(defaultPositions));
+
+        const ELEMENT_LABELS = {
+            videoFollow: '🎬 Video Follow (Bailes)',
+            slim: '🔔 Alertas Donación',
+            trollCard: '🤡 TrollFace Gigante',
+            slotsGroup: '🎛️ Grupo 6 Slots',
+            console: '💻 Consola Hacker'
+        };
+
+        function updateCoordInputsPanel() {
+            const grid = document.getElementById('coord-inputs-grid');
+            if (!grid) return;
+
+            let html = '';
+            const keys = ['videoFollow', 'slim', 'trollCard', 'slotsGroup', 'console'];
+            
+            keys.forEach(key => {
+                const pos = savedPositions[key] || { left: 0, top: 0, scale: 1.0 };
+                const label = ELEMENT_LABELS[key] || key;
+                const scaleVal = (pos.scale !== undefined) ? pos.scale : (key === 'videoFollow' ? 0.8 : 1.0);
+                
+                html += `
+                    <div class="coord-row">
+                        <span class="coord-title">${label}</span>
+                        <div class="coord-inputs-flex">
+                            <span>X:</span>
+                            <input type="number" class="coord-num-input" value="${Math.round(pos.left)}" onchange="updateElementCoord('${key}', 'left', this.value)">
+                            <span>Y:</span>
+                            <input type="number" class="coord-num-input" value="${Math.round(pos.top)}" onchange="updateElementCoord('${key}', 'top', this.value)">
+                            <span>Escala:</span>
+                            <input type="number" step="0.05" class="coord-num-input" value="${scaleVal}" onchange="updateElementCoord('${key}', 'scale', this.value)">
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        function updateElementCoord(elemId, field, value) {
+            if (!savedPositions[elemId]) savedPositions[elemId] = { top: 0, left: 0, scale: 1.0 };
+            let numVal = parseFloat(value);
+            if (isNaN(numVal)) numVal = 0;
+            
+            if (field === 'scale') {
+                numVal = Math.max(0.2, Math.min(3.0, numVal));
+            }
+            
+            savedPositions[elemId][field] = numVal;
+            savePositions();
+            applyPositions();
+        }
+
+        function copyCoordinatesSummary() {
+            const keys = ['videoFollow', 'slim', 'trollCard', 'slotsGroup', 'console'];
+            let text = "📋 COORDENADAS CONFIGURADAS PERMANENTES:\n\n";
+            keys.forEach(key => {
+                const pos = savedPositions[key] || { left: 0, top: 0, scale: 1.0 };
+                const label = ELEMENT_LABELS[key] || key;
+                const scaleVal = (pos.scale !== undefined) ? pos.scale : (key === 'videoFollow' ? 0.8 : 1.0);
+                text += `${label} => X: ${Math.round(pos.left)}, Y: ${Math.round(pos.top)}, Escala: ${scaleVal}\n`;
+            });
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert("✅ Coordenadas copiadas al portapapeles:\n\n" + text);
+                }).catch(err => {
+                    alert("Coordenadas configuradas:\n\n" + text);
+                });
+            } else {
+                alert("Coordenadas configuradas:\n\n" + text);
+            }
+        }
+
+        function applyPositions() {
+            if (savedPositions.slim) {
+                alertSlim.style.top = savedPositions.slim.top + 'px';
+                alertSlim.style.left = savedPositions.slim.left + 'px';
+                alertSlim.style.transform = `scale(${savedPositions.slim.scale || 1.0})`;
+            }
+            if (savedPositions.trollCard) {
+                trollCard.style.top = savedPositions.trollCard.top + 'px';
+                trollCard.style.left = savedPositions.trollCard.left + 'px';
+                trollCard.style.transform = `scale(${savedPositions.trollCard.scale || 1.0})`;
+            }
+            if (savedPositions.console) {
+                const hackingConsole = document.getElementById('troll-hacking-console');
+                if (hackingConsole) {
+                    hackingConsole.style.top = savedPositions.console.top + 'px';
+                    hackingConsole.style.left = savedPositions.console.left + 'px';
+                    hackingConsole.style.transform = `scale(${savedPositions.console.scale || 1.0})`;
+                }
+            }
+            if (savedPositions.videoFollow) {
+                videoContainer.style.top = savedPositions.videoFollow.top + 'px';
+                videoContainer.style.left = savedPositions.videoFollow.left + 'px';
+                videoContainer.style.transform = `scale(${savedPositions.videoFollow.scale || 0.8})`;
+            }
+            if (savedPositions.slotsGroup) {
+                slotsUnificadoGroup.style.top = savedPositions.slotsGroup.top + 'px';
+                slotsUnificadoGroup.style.left = savedPositions.slotsGroup.left + 'px';
+                const scaleVal = savedPositions.slotsGroup.scale || 1.0;
+                slotsUnificadoGroup.style.transform = `scale(${scaleVal})`;
+                if (scaleValDisplay) scaleValDisplay.innerText = Math.round(scaleVal * 100) + '%';
+            }
+            for (let i = 1; i <= 6; i++) {
+                const slotKey = `slot${i}`;
+                const cardElem = document.getElementById(`slot-card-${i}`);
+                if (cardElem && savedPositions[slotKey]) {
+                    cardElem.style.top = savedPositions[slotKey].top + 'px';
+                    cardElem.style.left = savedPositions[slotKey].left + 'px';
+                }
+            }
+        }
+
+        function savePositions() {
+            localStorage.setItem('tiktok_custom_positions_v8', JSON.stringify(savedPositions));
+        }
+
+        function changeElementScale(elemId, delta, event) {
+            if (event) event.stopPropagation();
+            if (!savedPositions[elemId]) savedPositions[elemId] = { top: 0, left: 0, scale: 1.0 };
+            let curScale = savedPositions[elemId].scale || 1.0;
+            curScale = Math.max(0.3, Math.min(2.5, parseFloat((curScale + delta).toFixed(2))));
+            savedPositions[elemId].scale = curScale;
+            savePositions();
+            applyPositions();
+            updateCoordInputsPanel();
+        }
+
+        function changeGroupScale(delta) {
+            changeElementScale('slotsGroup', delta);
+        }
+
+        function resetPositions() {
+            savedPositions = JSON.parse(JSON.stringify(defaultPositions));
+            savePositions();
+            applyPositions();
+            updateCoordInputsPanel();
+            alert('Posiciones y tamaños restablecidos por defecto.');
+        }
+
+        function positionAlertAboveSlotId(slotId) {
+            const slotKey = `slot${slotId}`;
+            const slotPos = savedPositions[slotKey] || { top: 0, left: 0 };
+            const groupPos = savedPositions.slotsGroup || { top: 180, left: 80, scale: 1.0 };
+
+            const computedLeft = groupPos.left + slotPos.left;
+            const computedTop = Math.max(20, groupPos.top + slotPos.top - 90);
+
+            alertSlim.style.left = Math.max(20, Math.min(computedLeft - 200, 1080 - 780)) + 'px';
+            alertSlim.style.top = computedTop + 'px';
+        }
+
+        let isEditMode = false;
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            if (isEditMode) {
+                document.body.classList.add('edit-mode-active');
+                editorBanner.style.display = 'block';
+                updateCoordInputsPanel();
+
+                alertSlim.classList.add('show');
+                trollCard.classList.add('show');
+                videoContainer.style.display = 'flex';
+                document.getElementById('troll-red-vignette').style.display = 'block';
+                document.getElementById('troll-red-vignette').style.opacity = '1';
+                typeConsoleLogs();
+
+                for (let i = 1; i <= 6; i++) {
+                    const cardElem = document.getElementById(`slot-card-${i}`);
+                    if (cardElem) cardElem.classList.add('active');
+                }
+            } else {
+                document.body.classList.remove('edit-mode-active');
+                editorBanner.style.display = 'none';
+
+                alertSlim.classList.remove('show');
+                trollCard.classList.remove('show');
+                videoContainer.style.display = 'none';
+                document.getElementById('troll-red-vignette').style.display = 'none';
+
+                for (let i = 1; i <= 6; i++) {
+                    const slot = SLOTS.find(s => s.id === i);
+                    const cardElem = document.getElementById(`slot-card-${i}`);
+                    if (cardElem && (!slot || !slot.occupied)) {
+                        cardElem.classList.remove('active');
+                    }
+                }
+                savePositions();
+            }
+        }
+
+        // DRAG AND DROP MOUSE ENGINE
+        let currentDraggedElem = null;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        document.addEventListener('mousedown', (e) => {
+            if (!isEditMode) return;
+            const target = e.target.closest('.drag-target');
+            if (target) {
+                currentDraggedElem = target;
+                const rect = target.getBoundingClientRect();
+                const stageRect = verticalStage.getBoundingClientRect();
+                const scale = stageRect.width / 1080;
+
+                dragOffsetX = (e.clientX - rect.left) / scale;
+                dragOffsetY = (e.clientY - rect.top) / scale;
+                e.preventDefault();
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isEditMode || !currentDraggedElem) return;
+            const stageRect = verticalStage.getBoundingClientRect();
+            const scale = stageRect.width / 1080;
+
+            let newLeft = Math.round((e.clientX - stageRect.left) / scale - dragOffsetX);
+            let newTop = Math.round((e.clientY - stageRect.top) / scale - dragOffsetY);
+
+            // Arrastre 100% libre y sin restricciones por todo el escenario 9:16
+            currentDraggedElem.style.left = newLeft + 'px';
+            currentDraggedElem.style.top = newTop + 'px';
+
+            const elemId = currentDraggedElem.getAttribute('id-element');
+            if (elemId) {
+                if (!savedPositions[elemId]) savedPositions[elemId] = {};
+                savedPositions[elemId].left = newLeft;
+                savedPositions[elemId].top = newTop;
+                updateCoordInputsPanel();
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (currentDraggedElem) {
+                currentDraggedElem = null;
+                savePositions();
+            }
+        });
+
+        // ==========================================
+        // 🎛️ CONFIGURACIÓN DE LOS 6 SLOTS Y TROLEOS AUTORIZADOS
+        // ==========================================
+        const SLOTS = [
+            { id: 1, occupied: false, trollType: null, timerId: null },
+            { id: 2, occupied: false, trollType: null, timerId: null },
+            { id: 3, occupied: false, trollType: null, timerId: null },
+            { id: 4, occupied: false, trollType: null, timerId: null },
+            { id: 5, occupied: false, trollType: null, timerId: null },
+            { id: 6, occupied: false, trollType: null, timerId: null }
+        ];
+
+        const TROLL_SPECS = {
+            'Troleo_Raton_Borracho':         { title: '🐭 RATÓN BORRACHO', duration: 10, sound: 'Chiripiorca.MP3', ringClass: 'raton-ring-active', vignetteId: 'troll-raton-vignette', hasHUD: true },
+            'Troleo_Parpadeo':              { title: '💡 PARPADEO', duration: 10, sound: 'Glitch.MP3', ringClass: 'invertido-ring-active', vignetteId: 'troll-parpadeo-vignette', hasHUD: true },
+            'Troleo_Invertido':            { title: '🙃 P. INVERTIDA', duration: 10, sound: 'Glitch.MP3', ringClass: 'invertido-ring-active', vignetteId: 'troll-invertido-vignette', hasHUD: true },
+            'Troleo_Zoom':                 { title: '🔍 SPACE WARP', duration: 8, sound: 'Glitch.MP3', ringClass: 'zoom-ring-active', vignetteId: 'troll-zoom-vignette', hasHUD: true },
+            'Troleo_Congelado':            { title: '❄️ CONGELADO', duration: 15, sound: 'Ventisca.MP3', ringClass: 'frost-ring-active', vignetteId: 'troll-frozen-vignette', hasHUD: true },
+            'Laptop_Troleo_Congelado_Tiktok': { title: '❄️ CONGELADO', duration: 15, sound: 'Ventisca.MP3', ringClass: 'frost-ring-active', vignetteId: 'troll-frozen-vignette', hasHUD: true },
+            // Alias cortos para compatibilidad
+            'raton':                       { title: '🐭 RATÓN BORRACHO', duration: 10, sound: 'Chiripiorca.MP3', ringClass: 'raton-ring-active', vignetteId: 'troll-raton-vignette', hasHUD: true },
+            'parpadeo':                    { title: '💡 PARPADEO', duration: 10, sound: 'Glitch.MP3', ringClass: 'invertido-ring-active', vignetteId: 'troll-parpadeo-vignette', hasHUD: true },
+            'invertido':                   { title: '🙃 P. INVERTIDA', duration: 10, sound: 'Glitch.MP3', ringClass: 'invertido-ring-active', vignetteId: 'troll-invertido-vignette', hasHUD: true },
+            'zoom':                        { title: '🔍 SPACE WARP', duration: 8, sound: 'Glitch.MP3', ringClass: 'zoom-ring-active', vignetteId: 'troll-zoom-vignette', hasHUD: true },
+            'congelado':                   { title: '❄️ CONGELADO', duration: 15, sound: 'Ventisca.MP3', ringClass: 'frost-ring-active', vignetteId: 'troll-frozen-vignette', hasHUD: true },
+            'glitch':                      { title: '👾 GLITCH', duration: 1.2, sound: 'Glitch.MP3', ringClass: 'zoom-ring-active', vignetteId: 'troll-glitch-vignette', hasHUD: false },
+            'consola':                     { title: '🟥 HACKEO ROJO', duration: 6, sound: 'Glitch.MP3', ringClass: 'zoom-ring-active', vignetteId: 'troll-red-vignette', hasHUD: true }
+        };
+
+        // ==========================================
+        // 🤡 MOSTRAR TARJETA POPUP TROLLFACE GIGANTE (REINICIO PERFECTO EN SPAM)
+        // ==========================================
+        let trollCardTimeout1 = null;
+        let trollCardTimeout2 = null;
+
+        function spawnTrollCard(displayName) {
+            if (trollUsernameDisplay) trollUsernameDisplay.innerText = displayName;
+
+            // Cancelar timeouts previos para evitar que se oculte prematuramente durante spam
+            if (trollCardTimeout1) clearTimeout(trollCardTimeout1);
+            if (trollCardTimeout2) clearTimeout(trollCardTimeout2);
+
+            // Reiniciar animación CSS de la tarjeta TrollFace
+            trollCard.classList.remove('show');
+            trollCard.style.display = 'none';
+            void trollCard.offsetWidth; // Forzar reflow en el DOM
+
+            trollCard.style.display = 'flex';
+            trollCard.classList.add('show');
+
+            trollCardTimeout1 = setTimeout(() => {
+                trollCard.classList.remove('show');
+                trollCardTimeout2 = setTimeout(() => {
+                    trollCard.style.display = 'none';
+                }, 600);
+            }, 4500);
+        }
+
+        function triggerTrollAlert(username, trollType) {
+            // Seleccionar troleo autorizados si el parámetro no se encuentra en TROLL_SPECS
+            let specKey = trollType;
+            if (!TROLL_SPECS[specKey]) {
+                const troleosAutorizados = ['Troleo_Raton_Borracho', 'Troleo_Parpadeo', 'Troleo_Invertido', 'Troleo_Zoom', 'Troleo_Congelado'];
+                specKey = troleosAutorizados[Math.floor(Math.random() * troleosAutorizados.length)];
+            }
+            const spec = TROLL_SPECS[specKey];
+
+            // 1. Mostrar SIEMPRE la tarjeta animada gigante TrollFace con el nombre del donador
+            spawnTrollCard(username);
+
+            // 2. Activar la Vignette visual correspondiente y su sonido
+            activateVignette(specKey);
+            playSFX(specKey, spec.sound);
+
+            // SI EL TROLEO NO REQUIERE CONTADOR HUD (COMO GLITCH 1.2s), TERMINA AQUÍ LIMPIAMENTE
+            if (!spec.hasHUD) {
+                setTimeout(() => {
+                    deactivateVignette(specKey);
+                    stopSFX(specKey);
+                }, Math.round(spec.duration * 1000));
+                return;
+            }
+
+            // 3. Buscar primer slot libre entre los 6 disponibles para troleos con HUD
+            let targetSlot = SLOTS.find(s => !s.occupied);
+            if (!targetSlot) {
+                targetSlot = SLOTS[0];
+                clearSlot(targetSlot);
+            }
+
+            targetSlot.occupied = true;
+            targetSlot.trollType = specKey;
+
+            // Posicionar la notificación dinámica exactamente encima del slot asignado
+            positionAlertAboveSlotId(targetSlot.id);
+
+            // 4. Actualizar elemento del slot dentro del grupo unificado
+            let cardElem = document.getElementById(`slot-card-${targetSlot.id}`);
+
+            const badgeTitle = spec.title;
+            const ringClass = spec.ringClass;
+            const duration = spec.duration;
+
+            // Conservar el drag-badge-label si se está editando
+            const dragBadgeHtml = `<div class="drag-badge-label">📍 Slot ${targetSlot.id}</div>`;
+
+            cardElem.innerHTML = `
+                ${dragBadgeHtml}
+                <div class="slot-troll-title-badge">${badgeTitle}</div>
+                <svg class="countdown-ring-svg">
+                    <circle class="countdown-ring-bg" cx="115" cy="115" r="97"></circle>
+                    <circle id="ring-slot-${targetSlot.id}" class="countdown-ring-active ${ringClass}" cx="115" cy="115" r="97"></circle>
+                </svg>
+                <div id="num-slot-${targetSlot.id}" class="modern-countdown-number">${duration}</div>
+                <div class="modern-donor-label">${username}</div>
+            `;
+
+            setTimeout(() => { cardElem.classList.add('active'); }, 20);
+
+            // 5. Iniciar temporizador exclusivo e independiente para este Slot
+            let secondsLeft = duration;
+            const ringElem = document.getElementById(`ring-slot-${targetSlot.id}`);
+            const numElem = document.getElementById(`num-slot-${targetSlot.id}`);
+
+            targetSlot.timerId = setInterval(() => {
+                secondsLeft--;
+                if (numElem) numElem.innerText = Math.max(0, secondsLeft);
+
+                if (ringElem) {
+                    const strokeOffset = 610 * (1 - (Math.max(0, secondsLeft) / duration));
+                    ringElem.style.strokeDashoffset = strokeOffset;
+                }
+
+                if (secondsLeft <= 0) {
+                    clearSlot(targetSlot);
+                }
+            }, 1000);
+        }
+
+        function clearSlot(slot) {
+            if (slot.timerId) {
+                clearInterval(slot.timerId);
+                slot.timerId = null;
+            }
+
+            const trollType = slot.trollType;
+            slot.occupied = false;
+            slot.trollType = null;
+
+            const cardElem = document.getElementById(`slot-card-${slot.id}`);
+            if (cardElem && !isEditMode) {
+                cardElem.classList.remove('active');
+            }
+
+            // Verificar si algún otro slot activo aún requiere esta misma vignette / sonido
+            const stillActive = SLOTS.some(s => s.occupied && s.trollType === trollType);
+            if (!stillActive && trollType) {
+                deactivateVignette(trollType);
+                stopSFX(trollType);
+            }
+        }
+
+        function activateVignette(trollType) {
+            const spec = TROLL_SPECS[trollType];
+            if (!spec) return;
+
+            // Parpadeo e Invertido suceden únicamente en la PC Principal mediante UDP.
+            // En el HTML solo se muestra la tarjeta HUD del slot con el temporizador y donador.
+            if (trollType === 'Troleo_Parpadeo' || trollType === 'parpadeo' || trollType === 'Troleo_Invertido' || trollType === 'invertido') {
+                return;
+            }
+
+            const vig = document.getElementById(spec.vignetteId);
+            if (vig) {
+                vig.style.display = 'block';
+                setTimeout(() => { vig.style.opacity = '1'; }, 20);
+            }
+
+            if (trollType === 'congelado' || trollType === 'Troleo_Congelado' || trollType === 'Laptop_Troleo_Congelado_Tiktok') {
+                initBlizzard();
+                blizzardActive = true;
+                drawBlizzard();
+            } else if (trollType === 'consola') {
+                typeConsoleLogs();
+            }
+        }
+
+        function deactivateVignette(trollType) {
+            const spec = TROLL_SPECS[trollType];
+            if (!spec) return;
+
+            if (trollType === 'Troleo_Parpadeo' || trollType === 'parpadeo' || trollType === 'Troleo_Invertido' || trollType === 'invertido') {
+                return;
+            }
+
+            const vig = document.getElementById(spec.vignetteId);
+            if (vig) {
+                vig.style.opacity = '0';
+                setTimeout(() => { vig.style.display = 'none'; }, 400);
+            }
+
+            if (trollType === 'congelado' || trollType === 'Troleo_Congelado' || trollType === 'Laptop_Troleo_Congelado_Tiktok') {
+                blizzardActive = false;
+            }
+        }
+
+        function typeConsoleLogs() {
+            const logsContainer = document.getElementById('console-logs');
+            if (!logsContainer) return;
+            logsContainer.innerHTML = '';
+
+            const lines = [
+                ">> INJECTING TIKTOK LIVE TROLL ENGINE...",
+                ">> PORT 8085 UDP BROADCAST ACTIVE",
+                ">> FORCING SENSITIVITY MULTIPLIER...",
+                ">> STATUS: STREAMER GAME CLIENT HIJACKED!"
+            ];
+
+            let lineIdx = 0;
+            function addLine() {
+                if (lineIdx < lines.length) {
+                    const lineDiv = document.createElement('div');
+                    lineDiv.className = 'console-line';
+                    lineDiv.innerText = lines[lineIdx];
+                    logsContainer.appendChild(lineDiv);
+                    lineIdx++;
+                    setTimeout(addLine, 220);
+                }
+            }
+            addLine();
+        }
+
+        // ==========================================
+        // 3. SISTEMA DE VENTISCA DE NIEVE CANVAS (VERTICAL 1080x1920)
+        // ==========================================
+        let blizzardActive = false;
+        let blizzardParticles = [];
+        const bCanvas = document.getElementById('blizzard-canvas');
+        const bCtx = bCanvas ? bCanvas.getContext('2d') : null;
+
+        class SnowParticle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * 1920;
+            }
+            reset() {
+                this.x = 1080 + Math.random() * 100;
+                this.y = Math.random() * 1920;
+                this.size = Math.random() * 10 + 4;
+                this.speedX = -(Math.random() * 22 + 14);
+                this.speedY = Math.random() * 5 - 2;
+                this.opacity = Math.random() * 0.5 + 0.35;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < -30) this.reset();
+            }
+            draw() {
+                if (!bCtx) return;
+                bCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                bCtx.beginPath();
+                bCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bCtx.fill();
+            }
+        }
+
+        function initBlizzard() {
+            blizzardParticles = [];
+            for (let i = 0; i < 140; i++) {
+                blizzardParticles.push(new SnowParticle());
+            }
+        }
+
+        function drawBlizzard() {
+            if (!blizzardActive || !bCtx) return;
+            bCtx.clearRect(0, 0, 1080, 1920);
+            
+            const grad = bCtx.createRadialGradient(540, 960, 250, 540, 960, 1100);
+            grad.addColorStop(0, 'rgba(224, 247, 250, 0.05)');
+            grad.addColorStop(1, 'rgba(0, 229, 255, 0.15)');
+            bCtx.fillStyle = grad;
+            bCtx.fillRect(0, 0, 1080, 1920);
+            
+            blizzardParticles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(drawBlizzard);
+        }
+
+        // ==========================================
+        // 4. EVENTO DE BAILE (FOLLOW) Y REGALOS ESTÁNDAR
+        // ==========================================
+        function cleanUsername(name) {
+            if (!name || name === '%user%' || name === '%username%' || name === '%user.name%' || name === '%nickname%' || name.startsWith('%')) {
+                return 'Donador_TikTok';
+            }
+            return name;
+        }
+
+        let followVideoTimeout = null;
+        function triggerFollowAlert(username) {
+            const cleanName = cleanUsername(username);
+            danceUserDisplay.innerText = cleanName;
+            videoContainer.style.display = 'flex';
+
+            if (followVideoTimeout) clearTimeout(followVideoTimeout);
+
+            danceVideo.currentTime = 0;
+            danceVideo.play().catch(e => {});
+
+            danceVideo.onended = () => {
+                videoContainer.style.display = 'none';
+                danceVideo.pause();
+            };
+
+            // Fallback de 10 segundos para ocultar el video automáticamente si no dispara onended
+            followVideoTimeout = setTimeout(() => {
+                videoContainer.style.display = 'none';
+                danceVideo.pause();
+            }, 10000);
+        }
+
+        function triggerTestAlert(username, giftName, coins, avatar, icon) {
+            const cleanName = cleanUsername(username);
+            const coinVal = parseInt(coins) || 1;
+            slimUsername.innerText = cleanName;
+            slimAction.innerText = `¡ENVIÓ ${(giftName || 'REGALO').toUpperCase()}!`;
+            slimBadge.innerText = `${coinVal} ${coinVal === 1 ? 'MONEDA' : 'MONEDAS'}`;
+
+            if (avatar && avatar !== 'null') slimAvatar.src = avatar;
+            else slimAvatar.src = 'TrollFace.png';
+
+            const slimGiftIcon = document.getElementById('slimGiftIcon');
+            if (slimGiftIcon) {
+                if (icon && icon !== 'null') slimGiftIcon.src = icon;
+                else slimGiftIcon.src = 'tiktok_coin.png';
+            }
+
+            if (coinVal >= 100) {
+                alertSlim.style.borderLeftColor = '#FFD700';
+                slimAction.style.color = '#FFD700';
+                slimBadge.style.color = '#FFD700';
+                slimBadge.style.background = 'rgba(255, 215, 0, 0.18)';
+                slimBadge.style.borderColor = 'rgba(255, 215, 0, 0.35)';
+            } else if (coinVal === 30) {
+                alertSlim.style.borderLeftColor = '#FE2C55';
+                slimAction.style.color = '#FE2C55';
+                slimBadge.style.color = '#FE2C55';
+                slimBadge.style.background = 'rgba(254, 44, 85, 0.18)';
+                slimBadge.style.borderColor = 'rgba(254, 44, 85, 0.35)';
+            } else {
+                alertSlim.style.borderLeftColor = '#25F4EE';
+                slimAction.style.color = '#25F4EE';
+                slimBadge.style.color = '#25F4EE';
+                slimBadge.style.background = 'rgba(37, 244, 238, 0.18)';
+                slimBadge.style.borderColor = 'rgba(37, 244, 238, 0.35)';
+            }
+
+            const slimProgressBar = document.getElementById('slimProgressBar');
+            if (slimProgressBar) {
+                slimProgressBar.classList.remove('run');
+                void slimProgressBar.offsetWidth;
+                slimProgressBar.classList.add('run');
+            }
+
+            alertSlim.style.display = 'flex';
+            setTimeout(() => { alertSlim.classList.add('show'); }, 20);
+
+            setTimeout(() => {
+                alertSlim.classList.remove('show');
+                setTimeout(() => { alertSlim.style.display = 'none'; }, 400);
+            }, 4500);
+        }
+
+        function triggerGiftAlert(user, giftName, coins, combo, avatar, icon) {
+            const cleanName = cleanUsername(user);
+            const coinVal = parseInt(coins) || 1;
+            if (coinVal === 30) {
+                const giftLower = (giftName || '').toLowerCase();
+                let trollType = 'Troleo_Raton_Borracho';
+                if (giftLower.includes('capibara') || giftLower.includes('capybara')) trollType = 'Troleo_Raton_Borracho';
+                else {
+                    const types = ['Troleo_Raton_Borracho', 'Troleo_Parpadeo', 'Troleo_Invertido', 'Troleo_Zoom'];
+                    trollType = types[Math.floor(Math.random() * types.length)];
+                }
+                triggerTrollAlert(cleanName, trollType);
+            } else {
+                triggerTestAlert(cleanName, giftName, coinVal, avatar, icon);
+            }
+        }
+
+        // ==========================================
+        // 5. LECTOR EN TIEMPO REAL DEL ARCHIVO DEDICADO "orden_tiktok.js" (EXACTO A BAILESKICKS.HTML)
+        // ==========================================
+        // ==========================================
+        // 5. LECTOR ULTRA-RÁPIDO Y LIGERO SIN LAG (FETCH NATIVO 0% CPU)
+        // ==========================================
+        let lectorIntervalId = null;
+        let totalTikTokProcessed = parseInt(localStorage.getItem('totalTikTokProcessed') || '0');
+
+        async function ejecutarLectorBridge() {
+            try {
+                const resp = await fetch("orden_tiktok.js?t=" + Date.now());
+                if (!resp.ok) return;
+                const text = await resp.text();
+                if (!text || !text.includes('lanzarAlertaTikTok')) return;
+
+                window._tempTikTokCommands = [];
+                window.lanzarAlertaTikTok = function(username, amount, avatar, time, message) {
+                    window._tempTikTokCommands.push({
+                        username: username || "Donador_TikTok",
+                        amount: parseInt(amount) || 0,
+                        avatar: avatar || null,
+                        time: time || Date.now(),
+                        message: message || ""
+                    });
+                };
+
+                // Ejecutar script en memoria sin tocar la estructura del DOM (0% Garbage Collection Lag)
+                const runBridge = new Function(text);
+                runBridge();
+
+                if (window._tempTikTokCommands.length > totalTikTokProcessed) {
+                    for (let i = totalTikTokProcessed; i < window._tempTikTokCommands.length; i++) {
+                        const cmd = window._tempTikTokCommands[i];
+                        const cleanName = cleanUsername(cmd.username);
+                        const msg = (cmd.message || '').toString();
+
+                        if (msg && msg !== 'follow' && (msg.toLowerCase().includes('troleo') || TROLL_SPECS[msg])) {
+                            triggerTrollAlert(cleanName, msg);
+                        } else if (cmd.amount === 0 || msg === 'follow') {
+                            triggerFollowAlert(cleanName);
+                        } else if (cmd.amount === 30) {
+                            triggerTrollAlert(cleanName, msg || 'Troleo_Raton_Borracho');
+                        } else {
+                            triggerGiftAlert(cleanName, "Regalo", cmd.amount, 1, cmd.avatar, null);
+                        }
+                    }
+                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                    localStorage.setItem('totalTikTokProcessed', totalTikTokProcessed.toString());
+                } else if (window._tempTikTokCommands.length < totalTikTokProcessed) {
+                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                    localStorage.setItem('totalTikTokProcessed', totalTikTokProcessed.toString());
+                }
+            } catch(e){}
+        }
+
+        function iniciarBridgeLector() {
+            if (lectorIntervalId) clearInterval(lectorIntervalId);
+            lectorIntervalId = setInterval(ejecutarLectorBridge, 300);
+            console.log('Lector nativo de orden_tiktok.js a 60 FPS iniciado.');
+        }
+
+        iniciarBridgeLector();
+        applyPositions();
+
+        // ATAJOS DE TECLADO (P para menú invisible, M para posicionador, F, 1 a 6)
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            const testUser = "UserTest_" + Math.floor(Math.random() * 100);
+
+            if (key === 'p') toggleTestMenu();
+            else if (key === 'm') toggleEditMode();
+            else if (key === 'f') triggerFollowAlert(testUser);
+            else if (key === '1') triggerTestAlert(testUser, "Rosa", 1, "TrollFace.png", "tiktok_coin.png");
+            else if (key === '2') triggerTrollAlert(testUser, 'Troleo_Raton_Borracho');
+            else if (key === '3') triggerTrollAlert(testUser, 'Troleo_Parpadeo');
+            else if (key === '4') triggerTrollAlert(testUser, 'Troleo_Invertido');
+            else if (key === '5') triggerTrollAlert(testUser, 'Troleo_Zoom');
+            else if (key === '6') triggerTrollAlert(testUser, 'Troleo_Congelado');
+        });
+
+        // WEBSOCKET DIRECTO (PUERTO 8080)
+        try {
+            const ws = new WebSocket('ws://127.0.0.1:8080');
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.event === 'gift') {
+                    triggerGiftAlert(data.nickname || data.uniqueId, data.giftName || 'Regalo', data.diamondCount || 1, data.repeatCount || 1, data.profilePictureUrl, data.giftPictureUrl);
+                } else if (data.event === 'follow') {
+                    triggerFollowAlert(data.nickname || data.uniqueId);
+                }
+            };
+        } catch(e){}
+    </script>
+</body>
+</html>
