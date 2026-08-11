@@ -1934,8 +1934,7 @@
         // ==========================================
         // 5. LECTOR ULTRA-RÁPIDO Y LIGERO SIN LAG (FETCH NATIVO 0% CPU)
         // ==========================================
-        let lectorIntervalId = null;
-        let totalTikTokProcessed = parseInt(localStorage.getItem('totalTikTokProcessed') || '0');
+        let totalTikTokProcessed = -1;
 
         async function ejecutarLectorBridge() {
             try {
@@ -1962,10 +1961,18 @@
                 const runBridge = new Function(text);
                 runBridge();
 
+                if (totalTikTokProcessed === -1) {
+                    // En el primer inicio, sincronizar al final del archivo para solo escuchar eventos NUEVOS
+                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                    return;
+                }
+
                 if (window._tempTikTokCommands.length > totalTikTokProcessed) {
                     for (let i = totalTikTokProcessed; i < window._tempTikTokCommands.length; i++) {
                         const cmd = window._tempTikTokCommands[i];
-                        const cleanName = cleanUsername(cmd.username);
+                        let rawName = (cmd.username || '').toString();
+                        if (rawName === '%user%' || rawName === '%nickname%' || !rawName) rawName = "Donador_TikTok";
+                        const cleanName = cleanUsername(rawName);
                         const msg = (cmd.message || '').toString();
 
                         if (msg && msg !== 'follow' && (msg.toLowerCase().includes('troleo') || TROLL_SPECS[msg])) {
@@ -1975,14 +1982,12 @@
                         } else if (cmd.amount === 30) {
                             triggerTrollAlert(cleanName, msg || 'Troleo_Raton_Borracho');
                         } else {
-                            triggerGiftAlert(cleanName, "Regalo", cmd.amount, 1, cmd.avatar, null);
+                            triggerGiftAlert(cleanName, "Regalo", cmd.amount || 1, 1, cmd.avatar, null);
                         }
                     }
                     totalTikTokProcessed = window._tempTikTokCommands.length;
-                    localStorage.setItem('totalTikTokProcessed', totalTikTokProcessed.toString());
                 } else if (window._tempTikTokCommands.length < totalTikTokProcessed) {
                     totalTikTokProcessed = window._tempTikTokCommands.length;
-                    localStorage.setItem('totalTikTokProcessed', totalTikTokProcessed.toString());
                 }
             } catch(e){}
         }
