@@ -1939,8 +1939,11 @@
 
         async function ejecutarLectorBridge() {
             try {
-                const resp = await fetch("orden_tiktok.js?t=" + Date.now());
-                if (!resp.ok) return;
+                let resp = await fetch("http://localhost:8000/orden_tiktok.js?t=" + Date.now()).catch(() => null);
+                if (!resp || !resp.ok) {
+                    resp = await fetch("orden_tiktok.js?t=" + Date.now()).catch(() => null);
+                }
+                if (!resp || !resp.ok) return;
                 const text = await resp.text();
                 if (!text || !text.includes('lanzarAlertaTikTok')) return;
 
@@ -1990,7 +1993,34 @@
             console.log('Lector nativo de orden_tiktok.js a 60 FPS iniciado.');
         }
 
+        function conectarStreamerbotWebSocket() {
+            try {
+                const ws = new WebSocket('ws://127.0.0.1:8080');
+                ws.onopen = () => console.log('🟢 Conectado a Streamer.bot por WebSocket');
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.event === 'gift' || data.event === 'Donacion') {
+                            const user = cleanUsername(data.user || data.nickname || data.user_name || "Donador");
+                            const coins = parseInt(data.coins || data.amount || data.diamondCount || 1);
+                            const troleo = data.troleo || data.message || "";
+                            if (coins === 30 || (troleo && TROLL_SPECS[troleo])) {
+                                triggerTrollAlert(user, troleo || 'Troleo_Raton_Borracho');
+                            } else {
+                                triggerGiftAlert(user, data.giftName || 'Regalo', coins, 1, data.avatar, null);
+                            }
+                        } else if (data.event === 'follow' || data.event === 'Follow') {
+                            const user = cleanUsername(data.user || data.nickname || data.user_name || "Seguidor");
+                            triggerFollowAlert(user);
+                        }
+                    } catch(e){}
+                };
+                ws.onclose = () => setTimeout(conectarStreamerbotWebSocket, 3000);
+            } catch(e){}
+        }
+
         iniciarBridgeLector();
+        conectarStreamerbotWebSocket();
         applyPositions();
 
         // ATAJOS DE TECLADO (P para menú invisible, M para posicionador, F, 1 a 6)
