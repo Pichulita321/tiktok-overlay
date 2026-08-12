@@ -217,67 +217,86 @@
         }
 
         // ==========================================
-        // LECTOR EN TIEMPO REAL DEL ARCHIVO "orden_tiktok.js" (EXCLUSIVO FOLLOWS)
+        // LECTOR EN TIEMPO REAL DEL ARCHIVO "orden_tiktok.js" (PATRÓN CASTIGO3D)
         // ==========================================
         let lectorIntervalId = null;
-        let totalTikTokProcessed = -1;
+        let totalTikTokProcessed = 0;
+        let primeraCargaLector = true;
 
-        async function ejecutarLectorBridge() {
-            try {
-                let resp = await fetch("orden_tiktok.js?t=" + Date.now()).catch(() => null);
-                if (!resp || !resp.ok) {
-                    resp = await fetch("http://localhost:8000/orden_tiktok.js?t=" + Date.now()).catch(() => null);
-                }
-                if (!resp || !resp.ok) return;
-                const text = await resp.text();
-                if (!text || !text.includes('lanzarAlertaTikTok')) return;
+        function ejecutarLectorBridge() {
+            window._tempTikTokCommands = [];
 
-                window._tempTikTokCommands = [];
-                window.lanzarAlertaTikTok = function(username, amount, avatar, time, message) {
-                    window._tempTikTokCommands.push({
-                        username: username || "Nuevo_Seguidor",
-                        amount: parseInt(amount) || 0,
-                        avatar: avatar || null,
-                        time: time || Date.now(),
-                        message: message || ""
-                    });
-                };
+            window.lanzarAlertaTikTok = function(username, amount, avatar, time, message) {
+                window._tempTikTokCommands.push({
+                    username: username || "Nuevo_Seguidor",
+                    amount: parseInt(amount) || 0,
+                    avatar: avatar || null,
+                    time: time || Date.now(),
+                    message: message || ""
+                });
+            };
 
-                const lines = text.split('\n');
-                for (let line of lines) {
-                    line = line.trim();
-                    if (line.startsWith('lanzarAlertaTikTok')) {
-                        try {
-                            const lineFn = new Function('lanzarAlertaTikTok', line);
-                            lineFn(window.lanzarAlertaTikTok);
-                        } catch(e) {}
-                    }
-                }
+            let v = document.getElementById("lector-tiktok-script");
+            if (v) v.remove();
+            let n = document.createElement("script");
+            n.id = "lector-tiktok-script";
 
-                if (totalTikTokProcessed === -1) {
-                    totalTikTokProcessed = window._tempTikTokCommands.length;
+            n.onload = function() {
+                const commands = window._tempTikTokCommands || [];
+
+                if (primeraCargaLector) {
+                    primeraCargaLector = false;
+                    totalTikTokProcessed = commands.length;
+                    console.log("📥 [Lector Follow] Sincronización inicial exitosa. Mensajes base omitidos:", totalTikTokProcessed);
                     return;
                 }
 
-                if (window._tempTikTokCommands.length > totalTikTokProcessed) {
-                    for (let i = totalTikTokProcessed; i < window._tempTikTokCommands.length; i++) {
-                        const cmd = window._tempTikTokCommands[i];
+                if (commands.length > totalTikTokProcessed) {
+                    console.log(`📥 [Lector Follow] Detectadas ${commands.length - totalTikTokProcessed} nuevas órdenes. (Total en archivo: ${commands.length})`);
+                    for (let i = totalTikTokProcessed; i < commands.length; i++) {
+                        const cmd = commands[i];
                         const msg = (cmd.message || '').toString();
 
                         if (cmd.amount === 0 || msg === 'follow' || msg.toLowerCase().includes('follow')) {
                             triggerFollowAlert(cmd.username);
                         }
                     }
-                    totalTikTokProcessed = window._tempTikTokCommands.length;
-                } else if (window._tempTikTokCommands.length < totalTikTokProcessed) {
-                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                    totalTikTokProcessed = commands.length;
+                } else if (commands.length < totalTikTokProcessed) {
+                    console.log("♻️ [Lector Follow] El archivo se ha reiniciado. Reseteando puntero.");
+                    totalTikTokProcessed = 0;
                 }
-            } catch(e){}
+            };
+
+            n.onerror = function() {
+                // Fallback fetch en caso de restricciones de script local
+                fetch("orden_tiktok.js?t=" + Date.now())
+                    .then(r => r.text())
+                    .then(text => {
+                        window._tempTikTokCommands = [];
+                        const lines = text.split('\n');
+                        for (let line of lines) {
+                            line = line.trim();
+                            if (line.startsWith('lanzarAlertaTikTok')) {
+                                try {
+                                    const fn = new Function('lanzarAlertaTikTok', line);
+                                    fn(window.lanzarAlertaTikTok);
+                                } catch(e){}
+                            }
+                        }
+                        n.onload();
+                    }).catch(() => {});
+            };
+
+            n.src = "orden_tiktok.js?t=" + Date.now();
+            document.head.appendChild(n);
         }
 
         function iniciarBridgeLector() {
             if (lectorIntervalId) clearInterval(lectorIntervalId);
-            lectorIntervalId = setInterval(ejecutarLectorBridge, 200);
+            lectorIntervalId = setInterval(ejecutarLectorBridge, 300);
+            console.log('🗣️ Lector de Follows (Patrón Castigo3D) iniciado');
+        }
             console.log('Lector de Follows a 60 FPS iniciado.');
         }
 
