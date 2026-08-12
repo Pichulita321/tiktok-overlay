@@ -148,32 +148,10 @@
             return name;
         }
 
-        const processedFollowers = new Set(JSON.parse(localStorage.getItem('processedFollowersList') || '[]'));
         let followVideoTimeout = null;
 
         function triggerFollowAlert(username) {
             const cleanName = cleanUsername(username);
-            const lowerName = cleanName.toLowerCase();
-
-            // Comprobar si es un usuario de prueba (Permitir repetir ilimitadamente)
-            const esPrueba = lowerName.includes('test') || 
-                             lowerName.includes('seguidor') || 
-                             lowerName.includes('donador') || 
-                             lowerName.includes('giankasor') ||
-                             lowerName === 'user' ||
-                             lowerName === 'usuario';
-
-            // Si NO es prueba y ya existe en la lista de seguidores procesados -> IGNORAR (Protección Unfollow/Refollow)
-            if (!esPrueba && processedFollowers.has(lowerName)) {
-                console.log(`🛡️ Refollow ignorado de: ${cleanName} (Ya bailaste por este usuario).`);
-                return;
-            }
-
-            // Guardar nuevo seguidor real en la lista permanente
-            if (!esPrueba) {
-                processedFollowers.add(lowerName);
-                localStorage.setItem('processedFollowersList', JSON.stringify(Array.from(processedFollowers)));
-            }
 
             // 🚀 REEMPLAZAR EL BAILE DE INMEDIATO (SIN COLA, REINICIA A 0s CON NUEVO NOMBRE)
             danceUserDisplay.innerText = cleanName;
