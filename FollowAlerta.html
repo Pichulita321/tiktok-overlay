@@ -243,8 +243,16 @@
                     });
                 };
 
-                const runBridge = new Function(text);
-                runBridge();
+                const lines = text.split('\n');
+                for (let line of lines) {
+                    line = line.trim();
+                    if (line.startsWith('lanzarAlertaTikTok')) {
+                        try {
+                            const lineFn = new Function('lanzarAlertaTikTok', line);
+                            lineFn(window.lanzarAlertaTikTok);
+                        } catch(e) {}
+                    }
+                }
 
                 if (totalTikTokProcessed === -1) {
                     totalTikTokProcessed = window._tempTikTokCommands.length;

@@ -1915,9 +1915,16 @@
                     });
                 };
 
-                // Ejecutar script en memoria sin tocar la estructura del DOM (0% Garbage Collection Lag)
-                const runBridge = new Function(text);
-                runBridge();
+                const lines = text.split('\n');
+                for (let line of lines) {
+                    line = line.trim();
+                    if (line.startsWith('lanzarAlertaTikTok')) {
+                        try {
+                            const lineFn = new Function('lanzarAlertaTikTok', line);
+                            lineFn(window.lanzarAlertaTikTok);
+                        } catch(e) {}
+                    }
+                }
 
                 if (totalTikTokProcessed === -1) {
                     // En el primer inicio, sincronizar al final del archivo para solo escuchar eventos NUEVOS
