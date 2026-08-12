@@ -1215,7 +1215,7 @@
         <!-- 3. REPRODUCTOR DE VIDEO DE FOLLOW BAILE VERTICAL (Z-INDEX 5000) -->
         <div id="video-container" class="drag-target" id-element="videoFollow">
             <div class="drag-badge-label">📍 Video Follow (Bailes)</div>
-            <video id="dance-video" src="FollowBaile.mp4" playsinline preload="auto"></video>
+            <video id="dance-video" src="FollowBaile.mp4" playsinline preload="auto" muted></video>
             <div class="dance-gradient-overlay"></div>
             <div class="dance-text-overlay">
                 <div class="dance-tag">NUEVO SEGUIDOR</div>
@@ -1867,19 +1867,21 @@
             try {
                 danceVideo.pause();
                 danceVideo.currentTime = 0;
-                
-                // Forzar reproducción limpia para evitar congelamientos en OBS
+                danceVideo.muted = true; // Satisface la política de Autoplay de Chromium CEF en OBS Studio
+
                 const startPlay = () => {
                     const promise = danceVideo.play();
                     if (promise !== undefined) {
-                        promise.catch(e => {
+                        promise.then(() => {
+                            danceVideo.muted = false; // Reactiva el audio una vez que arranca a reproducirse
+                        }).catch(e => {
                             danceVideo.currentTime = 0;
                             danceVideo.play().catch(() => {});
                         });
                     }
                 };
 
-                setTimeout(startPlay, 30);
+                setTimeout(startPlay, 20);
             } catch (e) {
                 danceVideo.currentTime = 0;
                 danceVideo.play().catch(() => {});
