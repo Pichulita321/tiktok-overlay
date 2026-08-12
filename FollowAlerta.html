@@ -148,10 +148,32 @@
             return name;
         }
 
+        const processedFollowers = new Set(JSON.parse(localStorage.getItem('processedFollowersList') || '[]'));
         let followVideoTimeout = null;
 
         function triggerFollowAlert(username) {
             const cleanName = cleanUsername(username);
+            const lowerName = cleanName.toLowerCase();
+
+            // Comprobar si es un usuario de prueba (Permitir repetir ilimitadamente)
+            const esPrueba = lowerName.includes('test') || 
+                             lowerName.includes('seguidor') || 
+                             lowerName.includes('donador') || 
+                             lowerName.includes('giankasor') ||
+                             lowerName.includes('user') ||
+                             lowerName === 'usuario';
+
+            // Si NO es prueba y ya existe en la lista de seguidores procesados -> IGNORAR (Protección Unfollow/Refollow)
+            if (!esPrueba && processedFollowers.has(lowerName)) {
+                console.log(`🛡️ Refollow ignorado de: ${cleanName} (Ya bailaste por este usuario).`);
+                return;
+            }
+
+            // Guardar nuevo seguidor real en la lista permanente
+            if (!esPrueba) {
+                processedFollowers.add(lowerName);
+                localStorage.setItem('processedFollowersList', JSON.stringify(Array.from(processedFollowers)));
+            }
 
             // 🚀 REEMPLAZAR EL BAILE DE INMEDIATO (SIN COLA, REINICIA A 0s CON NUEVO NOMBRE)
             danceUserDisplay.innerText = cleanName;
@@ -195,7 +217,7 @@
         }
 
         // ==========================================
-        // LECTOR EN TIEMPO REAL DEL ARCHIVO "orden_tiktok.js" (EXACTO A CASTIGO3D)
+        // LECTOR EN TIEMPO REAL DEL ARCHIVO "orden_follow.js" (EXACTO A CASTIGO3D)
         // ==========================================
         let lectorIntervalId = null;
         let totalTikTokProcessed = 0;
@@ -204,7 +226,7 @@
         function parsearLineaTikTok(linea) {
             if (!linea) return null;
             linea = linea.trim();
-            if (!linea.startsWith("lanzarAlertaTikTok")) return null;
+            if (!linea.startsWith("lanzarAlertaTikTok") && !linea.startsWith("lanzarAlertaFollow")) return null;
 
             let idxParen = linea.indexOf("(");
             let idxLastParen = linea.lastIndexOf(")");
@@ -214,24 +236,26 @@
 
             // Parser limpio por split de comas para ignorar errores de sintaxis JS
             let parts = content.split(",").map(s => s.trim().replace(/^["']|["']$/g, ''));
-            if (parts.length >= 2) {
+            if (parts.length >= 1) {
                 return {
                     username: parts[0] || "Nuevo_Seguidor",
                     amount: parseInt(parts[1]) || 0,
                     avatar: parts[2] || null,
                     time: parts[3] || Date.now(),
-                    message: parts[4] || ""
+                    message: parts[4] || "follow"
                 };
             }
             return null;
         }
 
         function ejecutarLectorBridge() {
-            fetch("orden_tiktok.js?t=" + Date.now())
+            // Intentar primero orden_follow.js y si no existe orden_tiktok.js
+            fetch("orden_follow.js?t=" + Date.now())
                 .then(response => {
-                    if (!response.ok) throw new Error("No se pudo leer");
-                    return response.text();
+                    if (!response.ok) return fetch("orden_tiktok.js?t=" + Date.now());
+                    return response;
                 })
+                .then(response => response.text())
                 .then(text => {
                     let lineas = text.split(/\r?\n/);
                     let commands = [];
@@ -255,7 +279,7 @@
                             const cmd = commands[i];
                             const msg = (cmd.message || '').toString();
 
-                            if (cmd.amount === 0 || msg === 'follow' || msg.toLowerCase().includes('follow')) {
+                            if (cmd.amount === 0 || msg === 'follow' || msg.toLowerCase().includes('follow') || !msg) {
                                 triggerFollowAlert(cmd.username);
                             }
                         }
@@ -271,9 +295,7 @@
         function iniciarBridgeLector() {
             if (lectorIntervalId) clearInterval(lectorIntervalId);
             lectorIntervalId = setInterval(ejecutarLectorBridge, 300);
-            console.log('🗣️ Lector de Follows (Texto Castigo3D) iniciado');
-        }
-            console.log('Lector de Follows a 60 FPS iniciado.');
+            console.log('🗣️ Lector de Follows dedicado (orden_follow.js) iniciado');
         }
 
         iniciarBridgeLector();
