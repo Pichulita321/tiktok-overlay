@@ -1927,16 +1927,14 @@
         // ==========================================
         // 5. LECTOR EN TIEMPO REAL DEL ARCHIVO DEDICADO "orden_tiktok.js" (EXACTO A BAILESKICKS.HTML)
         // ==========================================
-        // ==========================================
-        // 5. LECTOR ULTRA-RÁPIDO Y LIGERO SIN LAG (FETCH NATIVO 0% CPU)
-        // ==========================================
+        let lectorIntervalId = null;
         let totalTikTokProcessed = -1;
 
         async function ejecutarLectorBridge() {
             try {
-                let resp = await fetch("http://localhost:8000/orden_tiktok.js?t=" + Date.now()).catch(() => null);
+                let resp = await fetch("orden_tiktok.js?t=" + Date.now()).catch(() => null);
                 if (!resp || !resp.ok) {
-                    resp = await fetch("orden_tiktok.js?t=" + Date.now()).catch(() => null);
+                    resp = await fetch("http://localhost:8000/orden_tiktok.js?t=" + Date.now()).catch(() => null);
                 }
                 if (!resp || !resp.ok) return;
                 const text = await resp.text();
@@ -1990,8 +1988,8 @@
 
         function iniciarBridgeLector() {
             if (lectorIntervalId) clearInterval(lectorIntervalId);
-            lectorIntervalId = setInterval(ejecutarLectorBridge, 300);
-            console.log('Lector nativo de orden_tiktok.js a 60 FPS iniciado.');
+            lectorIntervalId = setInterval(ejecutarLectorBridge, 200);
+            console.log('Lector nativo OBS Studio de orden_tiktok.js a 60 FPS iniciado.');
         }
 
         function conectarStreamerbotWebSocket() {

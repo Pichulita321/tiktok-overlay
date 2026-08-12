@@ -18,15 +18,3 @@
 // Ejemplos de prueba (Descomenta cualquiera de estas líneas para probar la lectura en tiempo real):
 // lanzarAlertaTikTok("Giankasor_Fan", 30, null, "1712789999999", "Troleo_Congelado");
 // lanzarAlertaTikTok("Seguidor_Nuevo", 0, null, "1712790000000", "follow");
-lanzarAlertaTikTok("%user%", "%diamondCount%", "%userAvatar%", Date.now(), "");
-lanzarAlertaTikTok("%user%", 30, "%userAvatar%", Date.now(), "Troleo_Parpadeo");
-lanzarAlertaTikTok("%user%", 30, "%userAvatar%", Date.now(), "Troleo_Parpadeo");
-lanzarAlertaTikTok("%user%", "%diamondCount%", "%userAvatar%", Date.now(), "");
-lanzarAlertaTikTok("%user%", "%diamondCount%", "%userAvatar%", Date.now(), "");
-lanzarAlertaTikTok("%user%", "%diamondCount%", "%userAvatar%", Date.now(), "");
-lanzarAlertaTikTok("%user%", 30, "%userAvatar%", Date.now(), "Troleo_Invertido");
-lanzarAlertaTikTok("%user%", "%diamondCount%", "%userAvatar%", Date.now(), "");
-lanzarAlertaTikTok("%user%", 30, "%userAvatar%", Date.now(), "Troleo_Raton_Borracho");
-lanzarAlertaTikTok("%user%", 30, "%userAvatar%", Date.now(), "Troleo_Invertido");
-lanzarAlertaTikTok("%user%", "%diamondCount%", "%userAvatar%", Date.now(), "");
-lanzarAlertaTikTok("%user%", 30, "%userAvatar%", Date.now(), "Troleo_Invertido");
