@@ -1215,7 +1215,7 @@
         <!-- 3. REPRODUCTOR DE VIDEO DE FOLLOW BAILE VERTICAL (Z-INDEX 5000) -->
         <div id="video-container" class="drag-target" id-element="videoFollow">
             <div class="drag-badge-label">📍 Video Follow (Bailes)</div>
-            <video id="dance-video" src="FollowBaile.mp4" playsinline></video>
+            <video id="dance-video" src="FollowBaile.mp4" playsinline preload="auto"></video>
             <div class="dance-gradient-overlay"></div>
             <div class="dance-text-overlay">
                 <div class="dance-tag">NUEVO SEGUIDOR</div>
@@ -1865,16 +1865,24 @@
             if (followVideoTimeout) clearTimeout(followVideoTimeout);
 
             try {
+                danceVideo.pause();
                 danceVideo.currentTime = 0;
-                const playPromise = danceVideo.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(e => {
-                        danceVideo.currentTime = 0;
-                        danceVideo.play().catch(() => {});
-                    });
-                }
+                
+                // Forzar reproducción limpia para evitar congelamientos en OBS
+                const startPlay = () => {
+                    const promise = danceVideo.play();
+                    if (promise !== undefined) {
+                        promise.catch(e => {
+                            danceVideo.currentTime = 0;
+                            danceVideo.play().catch(() => {});
+                        });
+                    }
+                };
+
+                setTimeout(startPlay, 30);
             } catch (e) {
                 danceVideo.currentTime = 0;
+                danceVideo.play().catch(() => {});
             }
 
             danceVideo.onended = () => {
