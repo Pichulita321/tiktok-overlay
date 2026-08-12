@@ -1280,7 +1280,7 @@
             slim: { top: 514, left: 129, scale: 1.4 },
             trollCard: { top: 846, left: 181, scale: 0.65 },
             console: { top: 1618, left: 110, scale: 1.0 },
-            videoFollow: { top: -542, left: 376, scale: 0.3 },
+            videoFollow: { top: 0, left: 0, scale: 1.0 },
             slotsGroup: { top: 709, left: 360, scale: 0.4 },
             slot1: { top: 0, left: 0 },
             slot2: { top: 0, left: 330 },
@@ -1290,7 +1290,7 @@
             slot6: { top: 290, left: 660 }
         };
 
-        let savedPositions = JSON.parse(localStorage.getItem('tiktok_custom_positions_v8') || 'null') || JSON.parse(JSON.stringify(defaultPositions));
+        let savedPositions = JSON.parse(localStorage.getItem('tiktok_custom_positions_v9') || 'null') || JSON.parse(JSON.stringify(defaultPositions));
 
         const ELEMENT_LABELS = {
             videoFollow: '🎬 Video Follow (Bailes)',
@@ -1406,7 +1406,7 @@
         }
 
         function savePositions() {
-            localStorage.setItem('tiktok_custom_positions_v8', JSON.stringify(savedPositions));
+            localStorage.setItem('tiktok_custom_positions_v9', JSON.stringify(savedPositions));
         }
 
         function changeElementScale(elemId, delta, event) {
