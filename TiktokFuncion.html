@@ -1212,16 +1212,7 @@
             </div>
         </div>
 
-        <!-- 3. REPRODUCTOR DE VIDEO DE FOLLOW BAILE VERTICAL (Z-INDEX 5000) -->
-        <div id="video-container" class="drag-target" id-element="videoFollow">
-            <div class="drag-badge-label">📍 Video Follow (Bailes)</div>
-            <video id="dance-video" src="FollowBaile.mp4" playsinline preload="auto" muted></video>
-            <div class="dance-gradient-overlay"></div>
-            <div class="dance-text-overlay">
-                <div class="dance-tag">NUEVO SEGUIDOR</div>
-                <div class="dance-user" id="dance-user-display">Giankasor_</div>
-            </div>
-        </div>
+
 
         <canvas id="anti-sleep" width="1" height="1"></canvas>
     </div>
@@ -1280,7 +1271,6 @@
             slim: { top: 514, left: 129, scale: 1.4 },
             trollCard: { top: 846, left: 181, scale: 0.65 },
             console: { top: 1618, left: 110, scale: 1.0 },
-            videoFollow: { top: 0, left: 0, scale: 1.0 },
             slotsGroup: { top: 709, left: 360, scale: 0.4 },
             slot1: { top: 0, left: 0 },
             slot2: { top: 0, left: 330 },
@@ -1293,7 +1283,6 @@
         let savedPositions = JSON.parse(localStorage.getItem('tiktok_custom_positions_v9') || 'null') || JSON.parse(JSON.stringify(defaultPositions));
 
         const ELEMENT_LABELS = {
-            videoFollow: '🎬 Video Follow (Bailes)',
             slim: '🔔 Alertas Donación',
             trollCard: '🤡 TrollFace Gigante',
             slotsGroup: '🎛️ Grupo 6 Slots',
@@ -1305,7 +1294,7 @@
             if (!grid) return;
 
             let html = '';
-            const keys = ['videoFollow', 'slim', 'trollCard', 'slotsGroup', 'console'];
+            const keys = ['slim', 'trollCard', 'slotsGroup', 'console'];
             
             keys.forEach(key => {
                 const pos = savedPositions[key] || { left: 0, top: 0, scale: 1.0 };
@@ -1383,11 +1372,7 @@
                     hackingConsole.style.transform = `scale(${savedPositions.console.scale || 1.0})`;
                 }
             }
-            if (savedPositions.videoFollow) {
-                videoContainer.style.top = savedPositions.videoFollow.top + 'px';
-                videoContainer.style.left = savedPositions.videoFollow.left + 'px';
-                videoContainer.style.transform = `scale(${savedPositions.videoFollow.scale || 0.8})`;
-            }
+
             if (savedPositions.slotsGroup) {
                 slotsUnificadoGroup.style.top = savedPositions.slotsGroup.top + 'px';
                 slotsUnificadoGroup.style.left = savedPositions.slotsGroup.left + 'px';
@@ -1832,72 +1817,7 @@
             return name;
         }
 
-        const processedFollowers = new Set(JSON.parse(localStorage.getItem('processedFollowersList') || '[]'));
 
-        function triggerFollowAlert(username) {
-            const cleanName = cleanUsername(username);
-            const lowerName = cleanName.toLowerCase();
-
-            // Comprobar si es un usuario de prueba (Permitir repetir ilimitadamente)
-            const esPrueba = lowerName.includes('test') || 
-                             lowerName.includes('seguidor') || 
-                             lowerName.includes('donador') || 
-                             lowerName.includes('giankasor') ||
-                             lowerName === 'user' ||
-                             lowerName === 'usuario';
-
-            // Si NO es prueba y ya existe en la lista de seguidores procesados -> IGNORAR (Troleo de Unfollow/Refollow bloqueado)
-            if (!esPrueba && processedFollowers.has(lowerName)) {
-                console.log(`🛡️ Refollow ignorado de: ${cleanName} (Ya bailaste por este usuario).`);
-                return;
-            }
-
-            // Guardar nuevo seguidor real en la lista permanente
-            if (!esPrueba) {
-                processedFollowers.add(lowerName);
-                localStorage.setItem('processedFollowersList', JSON.stringify(Array.from(processedFollowers)));
-            }
-
-            // 🚀 REEMPLAZAR EL BAILE DE INMEDIATO (SIN COLA, REINICIA A 0s CON NUEVO NOMBRE)
-            danceUserDisplay.innerText = cleanName;
-            videoContainer.style.display = 'flex';
-
-            if (followVideoTimeout) clearTimeout(followVideoTimeout);
-
-            try {
-                danceVideo.pause();
-                danceVideo.currentTime = 0;
-                danceVideo.muted = true; // Satisface la política de Autoplay de Chromium CEF en OBS Studio
-
-                const startPlay = () => {
-                    const promise = danceVideo.play();
-                    if (promise !== undefined) {
-                        promise.then(() => {
-                            danceVideo.muted = false; // Reactiva el audio una vez que arranca a reproducirse
-                        }).catch(e => {
-                            danceVideo.currentTime = 0;
-                            danceVideo.play().catch(() => {});
-                        });
-                    }
-                };
-
-                setTimeout(startPlay, 20);
-            } catch (e) {
-                danceVideo.currentTime = 0;
-                danceVideo.play().catch(() => {});
-            }
-
-            danceVideo.onended = () => {
-                videoContainer.style.display = 'none';
-                danceVideo.pause();
-            };
-
-            // Fallback de 10 segundos para ocultar el video automáticamente si no dispara onended
-            followVideoTimeout = setTimeout(() => {
-                videoContainer.style.display = 'none';
-                danceVideo.pause();
-            }, 10000);
-        }
 
         function triggerTestAlert(username, giftName, coins, avatar, icon) {
             const cleanName = cleanUsername(username);

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta Follow TikTok - Baile 60 FPS (Standalone)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Poppins:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --font-main: 'Outfit', sans-serif;
+            --font-dance: 'Poppins', sans-serif;
+            --tiktok-pink: #FE2C55;
+            --tiktok-cyan: #25F4EE;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body, html {
+            background: transparent;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-main);
+            color: white;
+        }
+
+        /* 🎯 ESCENARIO PRINCIPAL VERTICAL 9:16 (1080px x 1920px STRICT) */
+        #vertical-stage {
+            position: relative;
+            width: 1080px;
+            height: 1920px;
+            background: transparent;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        @media screen and (max-height: 1919px) {
+            #vertical-stage {
+                transform: scale(calc(min(100vh / 1920, 100vw / 1080))) translateZ(0);
+                transform-origin: center center;
+            }
+        }
+
+        /* 🎬 REPRODUCTOR DE VIDEO DE FOLLOW VERTICAL (Z-INDEX 5000) */
+        #video-container {
+            position: absolute;
+            inset: 0;
+            width: 1080px;
+            height: 1920px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            z-index: 5000;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        #dance-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dance-gradient-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 1080px;
+            height: 600px;
+            background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0) 100%);
+            z-index: 5002;
+            pointer-events: none;
+        }
+
+        .dance-text-overlay {
+            position: absolute;
+            bottom: 140px;
+            left: 0;
+            width: 1080px;
+            text-align: center;
+            z-index: 5003;
+            padding: 0 40px;
+            pointer-events: none;
+        }
+
+        .dance-tag {
+            font-size: 2.2rem;
+            color: #25f4ee;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            font-weight: 800;
+            text-shadow: 0 0 16px rgba(37, 244, 238, 0.9);
+            margin-bottom: 12px;
+        }
+
+        .dance-user {
+            font-size: 4.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            font-family: var(--font-dance);
+            font-style: italic;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 4px 0 0 #fe2c55, -4px 0 0 #25f4ee;
+            word-wrap: break-word;
+            line-height: 1.1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ESCENARIO PRINCIPAL VERTICAL (1080 x 1920) -->
+    <div id="vertical-stage">
+        <div id="video-container">
+            <video id="dance-video" src="FollowBaile.mp4" playsinline preload="auto" muted></video>
+            <div class="dance-gradient-overlay"></div>
+            <div class="dance-text-overlay">
+                <div class="dance-tag">NUEVO SEGUIDOR</div>
+                <div class="dance-user" id="dance-user-display">Giankasor_</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videoContainer = document.getElementById('video-container');
+        const danceVideo = document.getElementById('dance-video');
+        const danceUserDisplay = document.getElementById('dance-user-display');
+
+        function cleanUsername(name) {
+            if (!name) return 'Nuevo_Seguidor';
+            name = name.toString().trim();
+            if (name.startsWith('@')) name = name.substring(1);
+            if (!name || name === '%user%' || name === '%nickname%') return 'Nuevo_Seguidor';
+            return name;
+        }
+
+        const processedFollowers = new Set(JSON.parse(localStorage.getItem('processedFollowersList') || '[]'));
+        let followVideoTimeout = null;
+
+        function triggerFollowAlert(username) {
+            const cleanName = cleanUsername(username);
+            const lowerName = cleanName.toLowerCase();
+
+            // Comprobar si es un usuario de prueba (Permitir repetir ilimitadamente)
+            const esPrueba = lowerName.includes('test') || 
+                             lowerName.includes('seguidor') || 
+                             lowerName.includes('donador') || 
+                             lowerName.includes('giankasor') ||
+                             lowerName === 'user' ||
+                             lowerName === 'usuario';
+
+            // Si NO es prueba y ya existe en la lista de seguidores procesados -> IGNORAR (Protección Unfollow/Refollow)
+            if (!esPrueba && processedFollowers.has(lowerName)) {
+                console.log(`🛡️ Refollow ignorado de: ${cleanName} (Ya bailaste por este usuario).`);
+                return;
+            }
+
+            // Guardar nuevo seguidor real en la lista permanente
+            if (!esPrueba) {
+                processedFollowers.add(lowerName);
+                localStorage.setItem('processedFollowersList', JSON.stringify(Array.from(processedFollowers)));
+            }
+
+            // 🚀 REEMPLAZAR EL BAILE DE INMEDIATO (SIN COLA, REINICIA A 0s CON NUEVO NOMBRE)
+            danceUserDisplay.innerText = cleanName;
+            videoContainer.style.display = 'flex';
+
+            if (followVideoTimeout) clearTimeout(followVideoTimeout);
+
+            try {
+                danceVideo.pause();
+                danceVideo.currentTime = 0;
+                danceVideo.muted = true; // Satisface la política de Autoplay de Chromium CEF
+
+                const startPlay = () => {
+                    const promise = danceVideo.play();
+                    if (promise !== undefined) {
+                        promise.then(() => {
+                            danceVideo.muted = false; // Reactiva el audio una vez que arranca
+                        }).catch(() => {
+                            danceVideo.currentTime = 0;
+                            danceVideo.play().catch(() => {});
+                        });
+                    }
+                };
+
+                setTimeout(startPlay, 20);
+            } catch (e) {
+                danceVideo.currentTime = 0;
+                danceVideo.play().catch(() => {});
+            }
+
+            danceVideo.onended = () => {
+                videoContainer.style.display = 'none';
+                danceVideo.pause();
+            };
+
+            // Fallback de 10 segundos para ocultar el video automáticamente si no dispara onended
+            followVideoTimeout = setTimeout(() => {
+                videoContainer.style.display = 'none';
+                danceVideo.pause();
+            }, 10000);
+        }
+
+        // ==========================================
+        // LECTOR EN TIEMPO REAL DEL ARCHIVO "orden_tiktok.js" (EXCLUSIVO FOLLOWS)
+        // ==========================================
+        let lectorIntervalId = null;
+        let totalTikTokProcessed = -1;
+
+        async function ejecutarLectorBridge() {
+            try {
+                let resp = await fetch("orden_tiktok.js?t=" + Date.now()).catch(() => null);
+                if (!resp || !resp.ok) {
+                    resp = await fetch("http://localhost:8000/orden_tiktok.js?t=" + Date.now()).catch(() => null);
+                }
+                if (!resp || !resp.ok) return;
+                const text = await resp.text();
+                if (!text || !text.includes('lanzarAlertaTikTok')) return;
+
+                window._tempTikTokCommands = [];
+                window.lanzarAlertaTikTok = function(username, amount, avatar, time, message) {
+                    window._tempTikTokCommands.push({
+                        username: username || "Nuevo_Seguidor",
+                        amount: parseInt(amount) || 0,
+                        avatar: avatar || null,
+                        time: time || Date.now(),
+                        message: message || ""
+                    });
+                };
+
+                const runBridge = new Function(text);
+                runBridge();
+
+                if (totalTikTokProcessed === -1) {
+                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                    return;
+                }
+
+                if (window._tempTikTokCommands.length > totalTikTokProcessed) {
+                    for (let i = totalTikTokProcessed; i < window._tempTikTokCommands.length; i++) {
+                        const cmd = window._tempTikTokCommands[i];
+                        const msg = (cmd.message || '').toString();
+
+                        if (cmd.amount === 0 || msg === 'follow' || msg.toLowerCase().includes('follow')) {
+                            triggerFollowAlert(cmd.username);
+                        }
+                    }
+                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                } else if (window._tempTikTokCommands.length < totalTikTokProcessed) {
+                    totalTikTokProcessed = window._tempTikTokCommands.length;
+                }
+            } catch(e){}
+        }
+
+        function iniciarBridgeLector() {
+            if (lectorIntervalId) clearInterval(lectorIntervalId);
+            lectorIntervalId = setInterval(ejecutarLectorBridge, 200);
+            console.log('Lector de Follows a 60 FPS iniciado.');
+        }
+
+        iniciarBridgeLector();
+
+        // Atajo de teclado (Presionar 'F' para probar)
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'f') {
+                triggerFollowAlert("Seguidor_Test_" + Math.floor(Math.random() * 100));
+            }
+        });
+    </script>
+</body>
+</html>
